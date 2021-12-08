@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -36,4 +38,12 @@ public class BankTransaction {
 
 	@Column(nullable = false, length = 3)
 	private String type;
+
+	@ManyToOne
+	@JoinColumn(nullable = false, updatable = false)
+	private BankCoordinate bankCoordinate;
+
+	@ManyToOne
+	@JoinColumn(nullable = false, updatable = false)
+	private Wallet wallet;
 }

@@ -1,6 +1,5 @@
 package com.paymybuddy.transfer.model;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -21,26 +20,26 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
-@Table(name = "wallets")
+@Table(name = "users_links")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Wallet {
+public class WalletLink {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(nullable = false, length = 3)
-	private String currency;
-
-	@Column(nullable = false)
-	@Builder.Default
-	private BigDecimal amount = BigDecimal.ZERO.setScale(2);
+	@Column(nullable = false, length = 16)
+	private String name;
 
 	@ManyToOne
 	@JoinColumn(nullable = false, updatable = false)
-	private User owner;
+	private Wallet sender;
 
-	@OneToMany(mappedBy = "sender")
-	private List<WalletLink> links;
+	@ManyToOne
+	@JoinColumn(nullable = false, updatable = false)
+	private Wallet receiver;
+
+	@OneToMany(mappedBy = "link")
+	private List<Transaction> transactions;
 }
