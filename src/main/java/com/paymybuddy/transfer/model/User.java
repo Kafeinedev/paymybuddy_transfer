@@ -33,7 +33,7 @@ public class User {
 	@Column(nullable = false, length = 16)
 	private String name;
 
-	@Column(nullable = false, columnDefinition = "VARBINARY(60)")
+	@Column(nullable = false, columnDefinition = "BINARY(60)")
 	private String password;
 
 	@OneToMany(mappedBy = "owner")

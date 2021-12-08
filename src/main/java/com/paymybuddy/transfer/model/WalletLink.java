@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
-@Table(name = "users_links")
+@Table(name = "wallets_links")
 @NoArgsConstructor
 @AllArgsConstructor
 public class WalletLink {
