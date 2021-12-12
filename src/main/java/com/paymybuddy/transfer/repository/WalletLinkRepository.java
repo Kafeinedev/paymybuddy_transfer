@@ -11,6 +11,6 @@ import com.paymybuddy.transfer.model.WalletLink;
 @Repository
 public interface WalletLinkRepository extends JpaRepository<WalletLink, Long> {
 
-	@Query("SELECT walletLinks FROM WalletLink walletLinks JOIN walletLinks.sender sender JOIN sender.owner owner WHERE owner.email=?1")
+	@Query("SELECT walletLinks FROM WalletLink walletLinks WHERE walletLinks.sender.owner.email=?1")
 	public List<WalletLink> findOutgoingLinksByUserEmail(String email);
 }

@@ -34,6 +34,7 @@ public class TransactionController {
 		Map<String, Object> model = new HashMap<String, Object>();
 
 		model.put("connections", userService.getAllOutgoingLinksByUser(userRep.findById(1L).orElseThrow()));
+		model.put("transactions", userService.getTransactionsInfoByUserAndPage(userRep.findById(1L).orElseThrow()));
 
 		return new ModelAndView("transactions", model);
 	}

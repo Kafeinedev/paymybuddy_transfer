@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,9 +42,9 @@ public class Wallet {
 	@JoinColumn(nullable = false, updatable = false)
 	private User owner;
 
-	@OneToMany(mappedBy = "sender")
+	@OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
 	private List<WalletLink> outgoingLinks;
 
-	@OneToMany(mappedBy = "receiver")
+	@OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
 	private List<WalletLink> incomingLinks;
 }

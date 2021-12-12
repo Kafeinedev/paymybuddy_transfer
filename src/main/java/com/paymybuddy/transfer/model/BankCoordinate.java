@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +31,6 @@ public class BankCoordinate {
 	@Column(nullable = false, unique = true, length = 34)
 	private String accountNumber;
 
-	@OneToMany(mappedBy = "bankCoordinate")
+	@OneToMany(mappedBy = "bankCoordinate", fetch = FetchType.LAZY)
 	private List<BankTransaction> bankTransactions;
 }
