@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" th:href="@{/transaction.css}" />
+<title>Pay My Buddy</title>
+</head>
+
+<body>
+	<header>
+		<div class="topnav">
+			<h1 class="logo">Pay My Buddy</h1>
+			<div>
+				<a href="/">Home</a> <a class="active" href="/Transfer">Transfer</a>
+				<a href="/Profile">Profile</a> <a href="/Contact">Contact</a> <a
+					href="/logout">Log off</a>
+			</div>
+		</div>
+		<div class="location">
+			<!--I have no idea how to insert "/" between two text-->
+			<p class="parent">Home</p>
+			<p class="parent">/</p>
+			<p>Transfer</p>
+		</div>
+	</header>
+
+	<section class="makeTransaction">
+		<div class="topMakeTransaction">
+			<p>Send Money</p>
+			<a href="addConnection">Add connection</a>
+		</div>
+		<form class="input" th:action="@{/transaction}" method="POST">
+			<select class="solidborder" th:name="connection">
+				<option th:each="connection : ${connections}"
+					th:text="${connection.name}" th:value="${connection.id}" />
+			</select> <input class="solidborder" type="number" step="any" min="1.0"
+				id="amount" placeholder="0€" th:name="amount"> <input class="payButton"
+				type="submit" value="pay">
+		</form>
+	</section>
+
+	<section class="transactionList">
+		<p>My Transactions</p>
+		<table class="solidborder alternating">
+			<tr id="head">
+				<td>Connections</td>
+				<td>Description</td>
+				<td>Amount</td>
+			</tr>
+			<tr th:each="transactions : ${transactions}">
+				<td th:text=${transaction.description}></td>
+				<td th:text=${transaction.description}></td>
+				<td th:text=${transaction.amount}></td>
+			</tr>
+			<tr>
+				<td>C'est bon</td>
+				<td>les patates</td>
+				<td>salamèche</td>
+			</tr>
+			<tr>
+				<td>C'est bon</td>
+				<td>les patates</td>
+				<td>salamèche</td>
+			</tr>
+		</table>
+	</section>
+</body>

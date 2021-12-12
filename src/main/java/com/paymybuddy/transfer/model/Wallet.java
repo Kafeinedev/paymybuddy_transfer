@@ -42,5 +42,8 @@ public class Wallet {
 	private User owner;
 
 	@OneToMany(mappedBy = "sender")
-	private List<WalletLink> links;
+	private List<WalletLink> outgoingLinks;
+
+	@OneToMany(mappedBy = "receiver")
+	private List<WalletLink> incomingLinks;
 }
