@@ -6,8 +6,13 @@ import java.util.List;
 
 import org.javatuples.Triplet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.paymybuddy.transfer.constant.PageSize;
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.WalletLink;
@@ -32,19 +37,21 @@ public class UserService {
 	}
 
 	public List<Transaction> getAllTransactionsByUser(User u) {
-		return transactionRepository.findAllByUserEmail(u.getEmail());
+		return new ArrayList<>();// transactionRepository.findAllByUserEmail(u.getEmail());
 	}
 
-	public List<Triplet<String, String, BigDecimal>> getTransactionsInfoByUserAndPage(User u) {
+	public Page<Triplet<String, String, BigDecimal>> getTransactionsInfoByUserAndPage(User u, int page) {
 		List<Triplet<String, String, BigDecimal>> transactionsInfo = new ArrayList<Triplet<String, String, BigDecimal>>();
-		List<Transaction> transactions = transactionRepository.findAllByUserEmail(u.getEmail());
+		Pageable pageRequest = PageRequest.of(page, PageSize.TRANSACTIONS_INFO);
+
+		Page<Transaction> transactions = transactionRepository.findAllByUserEmail(u.getEmail(), pageRequest);
 
 		for (Transaction transaction : transactions) {
-			transactionsInfo.add(new Triplet<String, String, BigDecimal>(
-					userRepository.findByTransactionIdAndOtherPartyEmail(transaction.getId(), u.getEmail()).getName(),
+			transactionsInfo.add(new Triplet<String, String, BigDecimal>(userRepository
+					.findByTransactionIdAndOtherPartyEmail(transaction.getId(), u.getEmail()).orElseThrow().getName(),
 					transaction.getDescription(), transaction.getAmount()));
 		}
 
-		return transactionsInfo;
+		return new PageImpl<>(transactionsInfo, pageRequest, transactions.getTotalElements());
 	}
 }
