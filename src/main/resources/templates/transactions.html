@@ -48,10 +48,10 @@
 				<td>Description</td>
 				<td>Amount</td>
 			</tr>
-			<tr th:each="transaction : ${transactions}" th:with="data=${transaction.toArray()}">
-				<td th:text="${data[0]}"></td>
-				<td th:text="${data[1]}"></td>
-				<td th:text="${data[2]}"></td>
+			<tr th:each="transaction : ${transactions}">
+				<td th:text="${transaction[0]}"></td>
+				<td th:text="${transaction[1]}"></td>
+				<td th:text="${transaction[2]}"></td>
 			</tr>
 		</table>
 		

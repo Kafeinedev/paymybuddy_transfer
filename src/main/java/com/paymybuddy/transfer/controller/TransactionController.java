@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.javatuples.Triplet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -37,12 +36,13 @@ public class TransactionController {
 	@GetMapping("/transactions")
 	public ModelAndView transactionList(@RequestParam Optional<Integer> page) {
 		Map<String, Object> model = new HashMap<String, Object>();
-		int currentPage = page.orElse(1) - 1;// List start at 0
-		Page<Triplet<String, String, BigDecimal>> transactionsInfoPage = userService
-				.getTransactionsInfoByUserAndPage(userRep.findById(1L).orElseThrow(), currentPage);
+		int currentPage = page.orElse(1) - 1;// first page == 0
+		Page<String[]> transactionsInfoPage = userService
+				.getTransactionsInfoByUserEmailAndPage(userRep.findById(1L).orElseThrow().getEmail(), currentPage);
 
-		model.put("connections", userService.getAllOutgoingLinksByUser(userRep.findById(1L).orElseThrow()));
-		model.put("currentPage", currentPage + 1);// View consider start at 1
+		model.put("connections",
+				userService.getAllOutgoingLinksByUserEmail(userRep.findById(1L).orElseThrow().getEmail()));
+		model.put("currentPage", currentPage + 1);// View consider first page == 1
 		model.put("totalPages", transactionsInfoPage.getTotalPages());
 		model.put("totalItems", transactionsInfoPage.getTotalElements());
 		model.put("transactions", transactionsInfoPage.getContent());

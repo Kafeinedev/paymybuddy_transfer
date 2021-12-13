@@ -42,6 +42,7 @@ public class TransactionService {
 		Wallet receiver = link.getReceiver();
 		BigDecimal fee = feeCalculation(amount);
 		BigDecimal totalCost = amount.add(fee).setScale(2, RoundingMode.HALF_UP);
+
 		if (sender.getAmount().compareTo(totalCost) < 0) {
 			log.error("Trying to make transaction without enough funds");
 			throw new InsufficientFundException();
