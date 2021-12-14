@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta charset="utf-8" />
-<link rel="stylesheet" th:href="@{/login.css}" />
+<link rel="stylesheet" th:href="@{css/login.css}" />
 <title>Pay My Buddy</title>
-
 </head>
 
 <body>
-        <form class="loginform"> 
+        <form class="loginform" th:action="@{/login}" method="post"> 
           <h2 class="logo">Pay My Buddy</h2>
-          <input type="text" class="input-field" name="username" placeholder="Email" required/>          
+          <input type="text" class="input-field" name="username" placeholder="Email" required autofocus/>          
           <input type="password" class="input-field" name="password" placeholder="Password" required/>   
           <div class="check">
-            <input type="checkbox" value="true" name="rememberMe" id="box"/>
+            <input type="checkbox" name="remember-me" id="box"/>
             <label for="box">Remember me</label>
         </div>   
           <button class="submit" type="submit">Login</button>   
