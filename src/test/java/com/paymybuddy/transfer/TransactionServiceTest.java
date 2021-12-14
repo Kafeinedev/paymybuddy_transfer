@@ -92,6 +92,13 @@ class TransactionServiceTest {
 	}
 
 	@Test
+	void makeTransaction_whenCalledWithANegativeAmount_throwIllegalArgumentException()
+			throws EntityMissingException, InsufficientFundException {
+		assertThrows(IllegalArgumentException.class,
+				() -> transactionService.makeTransaction(1, new BigDecimal(-1001000), null));
+	}
+
+	@Test
 	void findWalletLinkById_whenWalletLinkIdNotExist_throwsEntityMissingException() {
 		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 

@@ -43,6 +43,10 @@ public class TransactionService {
 		BigDecimal fee = feeCalculation(amount);
 		BigDecimal totalCost = amount.add(fee).setScale(2, RoundingMode.HALF_UP);
 
+		if (amount.compareTo(BigDecimal.ZERO) < 0) {
+			log.error("Trying to make a transaction with a negative amount");
+			throw new IllegalArgumentException();
+		}
 		if (sender.getAmount().compareTo(totalCost) < 0) {
 			log.error("Trying to make transaction without enough funds");
 			throw new InsufficientFundException();

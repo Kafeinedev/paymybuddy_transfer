@@ -17,7 +17,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InsufficientFundException;
-import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.service.TransactionService;
 import com.paymybuddy.transfer.service.UserService;
 
@@ -30,18 +29,13 @@ public class TransactionController {
 	@Autowired
 	private TransactionService transactionService;
 
-	@Autowired
-	private UserRepository userRep;
-
-	@GetMapping("/transactions")
-	public ModelAndView transactionList(@RequestParam Optional<Integer> page) {
+	@GetMapping("/mytransactions")
+	public ModelAndView myTransactions(@RequestParam Optional<Integer> page) {
 		Map<String, Object> model = new HashMap<String, Object>();
 		int currentPage = page.orElse(1) - 1;// first page == 0
-		Page<String[]> transactionsInfoPage = userService
-				.getTransactionsInfoByUserEmailAndPage(userRep.findById(1L).orElseThrow().getEmail(), currentPage);
+		Page<String[]> transactionsInfoPage = userService.getTransactionsInfoByUserEmailAndPage("", currentPage);
 
-		model.put("connections",
-				userService.getAllOutgoingLinksByUserEmail(userRep.findById(1L).orElseThrow().getEmail()));
+		model.put("connections", userService.getAllOutgoingLinksByUserEmail(""));
 		model.put("currentPage", currentPage + 1);// View consider first page == 1
 		model.put("totalPages", transactionsInfoPage.getTotalPages());
 		model.put("totalItems", transactionsInfoPage.getTotalElements());
@@ -55,7 +49,7 @@ public class TransactionController {
 			throws EntityMissingException, InsufficientFundException {
 		transactionService.makeTransaction(connection, amount, null);
 
-		return new RedirectView("/transactions");
+		return new RedirectView("/mytransactions");
 	}
 
 }
