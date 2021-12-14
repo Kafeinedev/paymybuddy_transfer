@@ -1,0 +1,64 @@
+/*center the login form*/
+body{
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+    background-color: #FFFFFF;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.7rem;
+}
+
+/*making border around the form and making elements
+arranged in column in center*/
+.loginform{
+    display: flex;
+    flex-direction: column;
+    border: 0.075rem solid;
+    border-radius: 0.33rem;
+    width: 33%;
+    align-items: center;
+    border-color: gray;
+}
+/*adjust the logo*/
+.logo{
+    background-color: #88c24b;
+    color: white;
+    text-align: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0.3rem;
+    width: 33%;
+    font-size: 0.8125rem;
+    margin-top: 7%;
+    margin-bottom: 9%;
+}
+/*inputs fields*/
+.input-field{
+    width: 80%;
+    margin-bottom: 6%;
+    border-radius: 0.2rem;
+    border: 0.075rem solid;
+    border-color: gray;
+    padding-top: 0.3rem;
+    padding-bottom:0.3rem;
+}
+/*check box*/
+.check{
+    font-size: 0.9rem;
+    margin-bottom: 17%;
+}
+/*submit button*/
+.submit{
+    margin-bottom: 10%;
+    background-color: #0275d8;
+    color: white;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    padding-left: 1.7rem;
+    padding-right: 1.7rem;
+    font-weight: bold;
+    font-size: 0.8rem;
+    border: none;
+}
