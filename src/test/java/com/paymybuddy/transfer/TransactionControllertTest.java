@@ -50,7 +50,7 @@ class TransactionControllertTest {
 	private TransactionService mockTransactionService;
 
 	@BeforeEach
-	void setUp() { // Post request will fail if we dont do this. No idea why.
+	void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
