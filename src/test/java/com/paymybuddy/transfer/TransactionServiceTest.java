@@ -23,7 +23,9 @@ import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.model.WalletLink;
+import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.repository.TransactionRepository;
+import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletLinkRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
 import com.paymybuddy.transfer.service.TransactionService;
@@ -40,6 +42,9 @@ class TransactionServiceTest {
 	@Mock
 	private WalletLinkRepository mockWalletLinkRepository;
 
+	@Mock
+	private UserRepository mockUserRepository;
+
 	@InjectMocks
 	private TransactionService transactionService;
 
@@ -52,15 +57,17 @@ class TransactionServiceTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		sender = Wallet.builder().amount(new BigDecimal(1000)).currency("EUR").id(1L).build();
+		sender.setOwner(User.builder().build());
 		receiver = Wallet.builder().amount(BigDecimal.ZERO).currency("EUR").id(2L).build();
 		link = WalletLink.builder().id(1L).name("nawak").sender(sender).receiver(receiver).build();
-		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
 	}
 
 	@Test
-	void makeTransaction_whenCalled_returnCorrectTransaction()
-			throws InsufficientFundException, WrongUserException, EntityMissingException {
-		Transaction test = transactionService.makeTransaction(1, new BigDecimal(100), "blablacar");
+	void makeTransaction_whenCalled_returnCorrectTransaction() throws Exception {
+		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
+		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.of(sender.getOwner()));
+
+		Transaction test = transactionService.makeTransaction("email", 1, new BigDecimal(100), "blablacar");
 
 		assertThat(test.getAmount()).isEqualTo(new BigDecimal(100).setScale(2));
 		assertThat(test.getFee()).isEqualTo(new BigDecimal(0.5).setScale(2));
@@ -69,47 +76,67 @@ class TransactionServiceTest {
 	}
 
 	@Test
-	void makeTransaction_whenSenderDontHaveEnoughFund_throwsInsufficientFundException()
-			throws InsufficientFundException, WrongUserException {
+	void makeTransaction_whenSenderDontHaveEnoughFund_throwsInsufficientFundException() throws Exception {
+		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
+		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.of(sender.getOwner()));
+
 		assertThrows(InsufficientFundException.class,
-				() -> transactionService.makeTransaction(1, new BigDecimal(1000), null));
+				() -> transactionService.makeTransaction("email", 1, new BigDecimal(1000), null));
 	}
 
 	@Test
-	void makeTransaction_whenCalled_properlyTransferFunds() throws EntityMissingException, InsufficientFundException {
-		transactionService.makeTransaction(1, new BigDecimal(100), null);
+	void makeTransaction_whenCalled_properlyTransferFunds() throws Exception {
+		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
+		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.of(sender.getOwner()));
+
+		transactionService.makeTransaction("email", 1, new BigDecimal(100), null);
 
 		assertThat(sender.getAmount()).isEqualTo(new BigDecimal(899.5).setScale(2));
 		assertThat(receiver.getAmount()).isEqualTo(new BigDecimal(100).setScale(2));
 	}
 
 	@Test
-	void makeTransaction_whenCalled_updateDatabase() throws EntityMissingException, InsufficientFundException {
-		transactionService.makeTransaction(1, new BigDecimal(100), null);
+	void makeTransaction_whenCalled_updateDatabase() throws Exception {
+		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
+		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.of(sender.getOwner()));
+
+		transactionService.makeTransaction("email", 1, new BigDecimal(100), null);
 
 		verify(mockTransactionRepository, times(1)).save(any(Transaction.class));
 		verify(mockWalletRepository, times(2)).save(any(Wallet.class));
 	}
 
 	@Test
-	void makeTransaction_whenCalledWithANegativeAmount_throwIllegalArgumentException()
-			throws EntityMissingException, InsufficientFundException {
+	void makeTransaction_whenCalledWithANegativeAmount_throwIllegalArgumentException() throws Exception {
+		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
+		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.of(sender.getOwner()));
+
 		assertThrows(IllegalArgumentException.class,
-				() -> transactionService.makeTransaction(1, new BigDecimal(-1001000), null));
+				() -> transactionService.makeTransaction("email", 1, new BigDecimal(-1001000), null));
 	}
 
 	@Test
-	void findWalletLinkById_whenWalletLinkIdNotExist_throwsEntityMissingException() {
+	void makeTransaction_whenUserWhoDontOwnSenderWalletMakeTransaction_throwWrongUserException() throws Exception {
+		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.of(User.builder().name("chipper").build()));
+		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
+
+		assertThrows(WrongUserException.class,
+				() -> transactionService.makeTransaction("email", 1, new BigDecimal(10), null));
+	}
+
+	@Test
+	void makeTransaction_whenUserDoesntExist_throwEntityMissingException() throws Exception {
+		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.empty());
+		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
+		assertThrows(EntityMissingException.class,
+				() -> transactionService.makeTransaction("email", 1, new BigDecimal(10), null));
+	}
+
+	@Test
+	void makeTransaction_whenWalletLinkDoesntExist_throwEntityMissingException() throws Exception {
 		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
-		assertThrows(EntityMissingException.class, () -> transactionService.findWalletLinkById(1L));
+		assertThrows(EntityMissingException.class,
+				() -> transactionService.makeTransaction("email", 1, new BigDecimal(10), null));
 	}
-
-	@Test
-	void findWalletLinkById_whenCalled_returnCorrectWalletLink() throws EntityMissingException {
-		WalletLink test = transactionService.findWalletLinkById(1L);
-
-		assertThat(test).isEqualTo(link);
-	}
-
 }
