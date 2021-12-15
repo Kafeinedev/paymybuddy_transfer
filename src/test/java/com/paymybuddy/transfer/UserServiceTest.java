@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.paymybuddy.transfer.constant.PageSize;
+import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
@@ -80,7 +81,8 @@ class UserServiceTest {
 	}
 
 	@Test
-	void getTransactionsInfoByUserEmailAndPage_whenNoTransactionWasFound_returnPageWithoutContent() {
+	void getTransactionsInfoByUserEmailAndPage_whenNoTransactionWasFound_returnPageWithoutContent()
+			throws InvalidArgumentException {
 		Pageable page = PageRequest.of(0, PageSize.TRANSACTIONS_INFO);
 		when(mockTransactionRepository.findByLinkSenderOwnerEmailOrderByDateDesc("ThisMethodName@isFarTooLong.com",
 				page)).thenReturn(new PageImpl<Transaction>(new ArrayList<Transaction>()));
@@ -91,7 +93,8 @@ class UserServiceTest {
 	}
 
 	@Test
-	void getTransactionsInfoByUserEmailAndPage_whenTransactionsWereFound_returnProperPageOfTransactionsInfo() {
+	void getTransactionsInfoByUserEmailAndPage_whenTransactionsWereFound_returnProperPageOfTransactionsInfo()
+			throws InvalidArgumentException {
 		Pageable page = PageRequest.of(0, PageSize.TRANSACTIONS_INFO);
 		Transaction one = Transaction.builder().amount(BigDecimal.ZERO).fee(BigDecimal.ZERO).id(1)
 				.link(new WalletLink()).description("thisisadescription").build();
@@ -111,7 +114,13 @@ class UserServiceTest {
 	}
 
 	@Test
-	void getTransactionsInfoByUserEmailAndPage_whenCalled_accessDatabase() {
+	void getTransactionsInfoByUserEmailAndPage_whenPageIsNegative_throwInvalidArgumentException() {
+		assertThrows(InvalidArgumentException.class,
+				() -> userService.getTransactionsInfoByUserEmailAndPage("ThisMethodName@isFarTooLong.com", -1));
+	}
+
+	@Test
+	void getTransactionsInfoByUserEmailAndPage_whenCalled_accessDatabase() throws InvalidArgumentException {
 		Pageable page = PageRequest.of(0, PageSize.TRANSACTIONS_INFO);
 		Transaction one = Transaction.builder().amount(BigDecimal.ZERO).fee(BigDecimal.ZERO).id(1)
 				.link(new WalletLink()).description("thisisadescription").build();

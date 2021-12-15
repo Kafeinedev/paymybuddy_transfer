@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.paymybuddy.transfer.constant.Currencies;
 import com.paymybuddy.transfer.constant.PageSize;
+import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
@@ -44,7 +45,12 @@ public class UserService implements UserDetailsService {
 		return walletLinkRepository.findBySenderOwnerEmail(email);
 	}
 
-	public Page<String[]> getTransactionsInfoByUserEmailAndPage(String email, int page) {
+	public Page<String[]> getTransactionsInfoByUserEmailAndPage(String email, int page)
+			throws InvalidArgumentException {
+		if (page < 0) {
+			log.error("Trying to access negative page");
+			throw new InvalidArgumentException();
+		}
 		List<String[]> transactionsInfo = new ArrayList<String[]>();
 		Pageable pageRequest = PageRequest.of(page, PageSize.TRANSACTIONS_INFO);
 

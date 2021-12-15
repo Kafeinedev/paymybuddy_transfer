@@ -1,5 +1,9 @@
 package com.paymybuddy.transfer.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 public class WrongUserException extends Exception {
 
 	/**

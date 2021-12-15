@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InsufficientFundException;
+import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.Wallet;
@@ -107,11 +108,11 @@ class TransactionServiceTest {
 	}
 
 	@Test
-	void makeTransaction_whenCalledWithANegativeAmount_throwIllegalArgumentException() throws Exception {
+	void makeTransaction_whenCalledWithANegativeAmount_throwInvalidArgumentException() throws Exception {
 		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
 		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.of(sender.getOwner()));
 
-		assertThrows(IllegalArgumentException.class,
+		assertThrows(InvalidArgumentException.class,
 				() -> transactionService.makeTransaction("email", 1, new BigDecimal(-1001000), null));
 	}
 

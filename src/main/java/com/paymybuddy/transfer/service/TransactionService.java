@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.transfer.constant.Fee;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InsufficientFundException;
+import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.User;
@@ -41,7 +42,7 @@ public class TransactionService {
 	private UserRepository userRepository;
 
 	public Transaction makeTransaction(String emitterEmail, long walletLinkId, BigDecimal amount, String description)
-			throws EntityMissingException, InsufficientFundException, WrongUserException {
+			throws EntityMissingException, InsufficientFundException, WrongUserException, InvalidArgumentException {
 
 		WalletLink link = walletLinkRepository.findById(walletLinkId).orElseThrow(() -> {
 			log.error("Could not find walletLink with id : " + walletLinkId);
@@ -64,7 +65,7 @@ public class TransactionService {
 	}
 
 	private boolean verifyTransaction(String emitterEmail, Wallet sender, Transaction transaction)
-			throws InsufficientFundException, WrongUserException, EntityMissingException {
+			throws InsufficientFundException, WrongUserException, EntityMissingException, InvalidArgumentException {
 		User emitter = userRepository.findByEmail(emitterEmail).orElseThrow(() -> {
 			log.error("Could not find user with email : " + emitterEmail);
 			return new EntityMissingException();
@@ -75,7 +76,7 @@ public class TransactionService {
 		}
 		if (transaction.getAmount().compareTo(BigDecimal.ZERO) < 0) {
 			log.error("Trying to make a transaction with a negative amount");
-			throw new IllegalArgumentException();
+			throw new InvalidArgumentException();
 		}
 		if (sender.getAmount().compareTo(transaction.getAmount().add(transaction.getFee())) < 0) {
 			log.error("Trying to make transaction without enough funds");
