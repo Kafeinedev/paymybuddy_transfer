@@ -52,6 +52,22 @@ header{
   .topnav a.active {
     color: #0069d9;
   }
+  /*Making form look like a link*/
+  .inline {
+  display: inline;
+}
+.link-button {
+padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.35rem;
+}
+.link-button:hover {
+  background-color: #ddd;
+    color: black;
+}
+  
 
 /*bottom half of the header*/
 .location{

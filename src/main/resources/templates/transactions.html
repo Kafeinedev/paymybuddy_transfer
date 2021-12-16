@@ -13,8 +13,13 @@
 			<h1 class="logo">Pay My Buddy</h1>
 			<div>
 				<a href="/">Home</a> <a class="active" href="/Transfer">Transfer</a>
-				<a href="/Profile">Profile</a> <a href="/Contact">Contact</a> <a
-					href="/logout">Log off</a>
+				<a href="/Profile">Profile</a> <a href="/Contact">Contact</a> 
+				<form method="post" th:action="@{/logout}" class="inline">
+  <input type="hidden">
+  <button type="submit" name="logout" class="link-button">
+    Log off
+  </button>
+</form>
 			</div>
 		</div>
 		<div class="location">
