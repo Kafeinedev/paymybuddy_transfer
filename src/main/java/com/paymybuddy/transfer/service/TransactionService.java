@@ -74,8 +74,9 @@ public class TransactionService {
 			log.error("User : " + emitter.getId() + " trying to make a transaction from a wallet it doesnt own");
 			throw new WrongUserException();
 		}
-		if (transaction.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-			log.error("Trying to make a transaction with a negative amount");
+		if ((transaction.getAmount().compareTo(BigDecimal.ZERO) < 0)
+				|| (!validateDescription(transaction.getDescription()))) {
+			log.error("Trying to make a transaction with a negative amount or a description too long");
 			throw new InvalidArgumentException();
 		}
 		if (sender.getAmount().compareTo(transaction.getAmount().add(transaction.getFee())) < 0) {
@@ -83,6 +84,10 @@ public class TransactionService {
 			throw new InsufficientFundException();
 		}
 		return true;
+	}
+
+	private boolean validateDescription(String description) {
+		return description.length() <= 255;
 	}
 
 	@Transactional
@@ -98,5 +103,21 @@ public class TransactionService {
 
 	private BigDecimal feeCalculation(BigDecimal amount) {
 		return amount.multiply(Fee.STANDARD_FEE).setScale(2, RoundingMode.HALF_UP);
+	}
+
+	public Transaction updateDescription(long id, String description)
+			throws EntityMissingException, InvalidArgumentException {
+		if (!validateDescription(description)) {
+			log.error("Trying to update description of transaction " + id + " with a description that is too long");
+			throw new InvalidArgumentException();
+		}
+		Transaction transaction = transactionRepository.findById(id).orElseThrow(() -> {
+			log.error("Could not update description of missing transaction : " + id);
+			return new EntityMissingException();
+		});
+
+		transaction.setDescription(description);
+
+		return transactionRepository.save(transaction);
 	}
 }

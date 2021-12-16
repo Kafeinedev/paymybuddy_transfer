@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -139,5 +140,62 @@ class TransactionServiceTest {
 
 		assertThrows(EntityMissingException.class,
 				() -> transactionService.makeTransaction("email", 1, new BigDecimal(10), null));
+	}
+
+	@Test
+	void makeTransaction_whenCalledWithADescriptionThatIsTooLong_throwInvalidArgumentException() throws Exception {
+		when(mockWalletLinkRepository.findById(any(Long.class))).thenReturn(Optional.of(link));
+		when(mockUserRepository.findByEmail("email")).thenReturn(Optional.of(sender.getOwner()));
+
+		assertThrows(InvalidArgumentException.class,
+				() -> transactionService.makeTransaction("email", 1, new BigDecimal(0),
+						"This description is far too loooooooooooooooooooooooooooooooooooooooooooooooooo"
+								+ "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+								+ "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+								+ "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong"));
+	}
+
+	@Test
+	void updateDescription_whenCalled_returnUpdatedTransaction() throws Exception {
+		Transaction transaction = Transaction.builder().link(link).amount(BigDecimal.TEN).fee(BigDecimal.ONE).id(1L)
+				.build();
+		Date dateTransaction = transaction.getDate();
+		when(mockTransactionRepository.findById(1L)).thenReturn(Optional.of(transaction));
+		when(mockTransactionRepository.save(transaction)).thenReturn(transaction);
+
+		Transaction test = transactionService.updateDescription(1L, "this is an updated description");
+
+		assertThat(test.getDescription()).isEqualTo("this is an updated description");
+		assertThat(test.getAmount()).isEqualTo(BigDecimal.TEN);
+		assertThat(test.getFee()).isEqualTo(BigDecimal.ONE);
+		assertThat(test.getDate()).isEqualTo(dateTransaction);
+	}
+
+	@Test
+	void updateDescription_whenCalled_updateDatabase() throws Exception {
+		Transaction transaction = Transaction.builder().link(link).amount(BigDecimal.TEN).fee(BigDecimal.ONE).id(1L)
+				.build();
+		when(mockTransactionRepository.findById(1L)).thenReturn(Optional.of(transaction));
+
+		transactionService.updateDescription(1L, "this is an updated description");
+
+		verify(mockTransactionRepository, times(1)).save(transaction);
+	}
+
+	@Test
+	void updateDescription_ifDescriptionTooLong_throwInvalidArgumentException() {
+		assertThrows(InvalidArgumentException.class, () -> transactionService.updateDescription(1L,
+				"This description is far too loooooooooooooooooooooooooooooooooooooooooooooooooo"
+						+ "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+						+ "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+						+ "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong"));
+	}
+
+	@Test
+	void updateDescription_ifMissingTransaction_throwEntityMissingException() {
+		when(mockTransactionRepository.findById(1L)).thenReturn(Optional.empty());
+
+		assertThrows(EntityMissingException.class,
+				() -> transactionService.updateDescription(1L, "this is an updated description"));
 	}
 }
