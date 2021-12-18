@@ -93,8 +93,44 @@ public class DummyBankService {
 	}
 
 	@Transactional
-	public BankTransaction fund(String userEmail, long bankCoordinateId, long walletId, BigDecimal amount) {
-		return null;
+	public BankTransaction fund(String userEmail, long bankCoordinateId, long walletId, BigDecimal amount)
+			throws EntityMissingException, WrongUserException, InvalidArgumentException {
+		BankCoordinate coordinate = bankCoordinateRepository.findById(bankCoordinateId).orElseThrow(() -> {
+			log.error("Could not execute funding bankCoordinate id : " + bankCoordinateId + " not found");
+			return new EntityMissingException();
+		});
+		Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> {
+			log.error("Could not execute funding wallet id : " + walletId + " not found");
+			return new EntityMissingException();
+		});
+		BankTransaction bTransaction = BankTransaction.builder().amount(amount).type(BankTransactionType.FUND)
+				.bankCoordinate(coordinate).wallet(wallet).build();
+		if (verifyFunding(userEmail, bTransaction)) {
+			wallet.setAmount(wallet.getAmount().add(amount).setScale(2));
+			walletRepository.save(wallet);
+			bankTransactionRepository.save(bTransaction);
+		}
+		return bTransaction;
+	}
+
+	private boolean verifyFunding(String userEmail, BankTransaction funding)
+			throws WrongUserException, InvalidArgumentException {
+		Wallet wallet = funding.getWallet();
+		User user = wallet.getOwner();
+
+		if (!user.getBankCoordinates().contains(funding.getBankCoordinate())) {
+			log.error("User with userEmail " + userEmail + "trying to fund from an account he isnt linked to");
+			throw new InvalidArgumentException();
+		}
+		if (funding.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+			log.error("User with userEmail " + userEmail + "trying to fund with a negative amount");
+			throw new InvalidArgumentException();
+		}
+		if (!user.getEmail().equals(userEmail)) {
+			log.error("User with userEmail " + userEmail + "trying to fund a wallet he doesnt own");
+			throw new WrongUserException();
+		}
+		return true;
 	}
 
 	private boolean validateAccountNumber(String accountNumber) throws InvalidArgumentException {

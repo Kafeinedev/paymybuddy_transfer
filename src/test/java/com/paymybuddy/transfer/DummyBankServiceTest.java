@@ -196,7 +196,7 @@ class DummyBankServiceTest {
 	}
 
 	@Test
-	void withdraw_whenUserWhoDontOwnWallet_throwWrongUserException() throws Exception {
+	void withdraw_whenUserDontOwnWallet_throwWrongUserException() throws Exception {
 		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
 		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
 		wallet.getOwner().setEmail("oh nyo !");
@@ -226,5 +226,80 @@ class DummyBankServiceTest {
 		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.empty());
 
 		assertThrows(EntityMissingException.class, () -> bankService.withdraw("email", 1L, 1L, BigDecimal.ONE));
+	}
+
+	@Test
+	void fund_whenCalled_returnCorrectBankTransaction() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		BankTransaction test = bankService.fund("email", 1L, 1L, BigDecimal.ONE);
+
+		assertThat(test.getAmount()).isEqualTo(BigDecimal.ONE);
+		assertThat(test.getBankCoordinate()).isEqualTo(bankCoordinate);
+		assertThat(test.getWallet()).isEqualTo(wallet);
+		assertThat(test.getType()).isEqualTo(BankTransactionType.FUND);
+	}
+
+	@Test
+	void fund_whenCalled_properlyAddsFunds() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		bankService.fund("email", 1L, 1L, BigDecimal.ONE);
+
+		assertThat(wallet.getAmount()).isEqualTo(new BigDecimal(11.00).setScale(2));
+	}
+
+	@Test
+	void fund_whenCalled_updateDatabase() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		bankService.fund("email", 1L, 1L, BigDecimal.ONE);
+
+		verify(mockWalletRepository, times(1)).save(wallet);
+		verify(mockBankTransactionRepository, times(1)).save(any(BankTransaction.class));
+	}
+
+	@Test
+	void fund_whenCalledWithANegativeAmount_throwInvalidArgumentException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		assertThrows(InvalidArgumentException.class, () -> bankService.fund("email", 1L, 1L, new BigDecimal(-10000)));
+	}
+
+	@Test
+	void fund_whenUserDontOwnWallet_throwWrongUserException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+		wallet.getOwner().setEmail("oh nyo !");
+
+		assertThrows(WrongUserException.class, () -> bankService.fund("email", 1L, 1L, BigDecimal.ONE));
+	}
+
+	@Test
+	void fund_whenWalletDoesntExist_throwEntityMissingException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.empty());
+
+		assertThrows(EntityMissingException.class, () -> bankService.fund("email", 1L, 1L, BigDecimal.ONE));
+	}
+
+	@Test
+	void fund_whenUserDoesntHaveALinkToBankCoordinate_throwInvalidArgumentException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+		wallet.getOwner().setBankCoordinates(new ArrayList<>());
+
+		assertThrows(InvalidArgumentException.class, () -> bankService.fund("email", 1L, 1L, BigDecimal.ONE));
+	}
+
+	@Test
+	void fund_whenBankCoordinateDoesntExist_throwEntityMissingException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.empty());
+
+		assertThrows(EntityMissingException.class, () -> bankService.fund("email", 1L, 1L, BigDecimal.ONE));
 	}
 }
