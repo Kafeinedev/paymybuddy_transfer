@@ -38,6 +38,7 @@ import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.WalletLink;
 import com.paymybuddy.transfer.service.TransactionService;
 import com.paymybuddy.transfer.service.UserService;
+import com.paymybuddy.transfer.service.WalletLinkService;
 
 @WebMvcTest(TransactionController.class)
 @ExtendWith(MockitoExtension.class)
@@ -51,6 +52,9 @@ class TransactionControllertTest {
 	private UserService mockUserService;
 
 	@MockBean
+	private WalletLinkService mockWalletLinkService;
+
+	@MockBean
 	private TransactionService mockTransactionService;
 
 	@Test
@@ -59,7 +63,7 @@ class TransactionControllertTest {
 		List<WalletLink> links = new ArrayList<WalletLink>();
 
 		when(mockUserService.getTransactionsInfoByUserEmailAndPage("a@dress.com", 0)).thenReturn(page);
-		when(mockUserService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
+		when(mockWalletLinkService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
 
 		mockMvc.perform(get("/mytransactions")).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("transactions")).andExpect(model().size(5))
@@ -74,18 +78,18 @@ class TransactionControllertTest {
 		List<WalletLink> links = new ArrayList<WalletLink>();
 
 		when(mockUserService.getTransactionsInfoByUserEmailAndPage("a@dress.com", 0)).thenReturn(page);
-		when(mockUserService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
+		when(mockWalletLinkService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
 
 		mockMvc.perform(get("/mytransactions"));
 
 		verify(mockUserService, times(1)).getTransactionsInfoByUserEmailAndPage(any(String.class), any(Integer.class));
-		verify(mockUserService, times(1)).getAllOutgoingLinksByUserEmail(any(String.class));
+		verify(mockWalletLinkService, times(1)).getAllOutgoingLinksByUserEmail(any(String.class));
 	}
 
 	@Test
 	void getMyTransactions_whenServiceThrowInvalidArgumentException_return400BadRequest() throws Exception {
 		List<WalletLink> links = new ArrayList<WalletLink>();
-		when(mockUserService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
+		when(mockWalletLinkService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
 		doThrow(new InvalidArgumentException()).when(mockUserService)
 				.getTransactionsInfoByUserEmailAndPage(any(String.class), any(Integer.class));
 

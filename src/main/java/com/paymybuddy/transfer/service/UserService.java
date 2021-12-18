@@ -41,10 +41,6 @@ public class UserService implements UserDetailsService {
 
 	private Logger log = LogManager.getLogger("User Service");
 
-	public List<WalletLink> getAllOutgoingLinksByUserEmail(String email) {
-		return walletLinkRepository.findBySenderOwnerEmail(email);
-	}
-
 	public Page<String[]> getTransactionsInfoByUserEmailAndPage(String email, int page)
 			throws InvalidArgumentException {
 		if (page < 0) {

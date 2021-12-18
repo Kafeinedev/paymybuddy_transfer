@@ -52,35 +52,6 @@ class UserServiceTest {
 	private UserService userService;
 
 	@Test
-	void getAllOutgoingLinksByUserEmail_whenNoLinksExist_returnEmptyList() {
-		when(mockWalletLinkRepository.findBySenderOwnerEmail("Idont@Exist.com"))
-				.thenReturn(new ArrayList<WalletLink>());
-
-		List<WalletLink> test = userService.getAllOutgoingLinksByUserEmail("Idont@Exist.com");
-
-		assertThat(test).isEmpty();
-	}
-
-	@Test
-	void getAllOutgoingLinksByUserEmail_whenLinksExist_returnProperListOfWalletLinks() {
-		WalletLink link = WalletLink.builder().id(1L).name("name").sender(new Wallet()).receiver(new Wallet()).build();
-		when(mockWalletLinkRepository.findBySenderOwnerEmail("I@Exist.com"))
-				.thenReturn(new ArrayList<WalletLink>(List.of(link)));
-
-		List<WalletLink> test = userService.getAllOutgoingLinksByUserEmail("I@Exist.com");
-
-		assertThat(test.size()).isEqualTo(1);
-		assertThat(test.get(0)).isEqualTo(link);
-	}
-
-	@Test
-	void getAllOutgoingLinksByUserEmail_whenCalled_accessDatabase() {
-		userService.getAllOutgoingLinksByUserEmail("Ido@Nothing.com");
-
-		verify(mockWalletLinkRepository, times(1)).findBySenderOwnerEmail("Ido@Nothing.com");
-	}
-
-	@Test
 	void getTransactionsInfoByUserEmailAndPage_whenNoTransactionWasFound_returnPageWithoutContent()
 			throws InvalidArgumentException {
 		Pageable page = PageRequest.of(0, PageSize.TRANSACTIONS_INFO);
