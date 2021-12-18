@@ -7,7 +7,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,13 +19,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.paymybuddy.transfer.constant.BankTransactionType;
 import com.paymybuddy.transfer.exception.EntityMissingException;
+import com.paymybuddy.transfer.exception.InsufficientFundException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
+import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.BankCoordinate;
+import com.paymybuddy.transfer.model.BankTransaction;
 import com.paymybuddy.transfer.model.User;
+import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.repository.BankCoordinateRepository;
 import com.paymybuddy.transfer.repository.BankTransactionRepository;
 import com.paymybuddy.transfer.repository.UserRepository;
+import com.paymybuddy.transfer.repository.WalletRepository;
 import com.paymybuddy.transfer.service.DummyBankService;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,13 +44,27 @@ class DummyBankServiceTest {
 	private BankTransactionRepository mockBankTransactionRepository;
 
 	@Mock
+	private WalletRepository mockWalletRepository;
+
+	@Mock
 	private UserRepository mockUserRepository;
 
 	@InjectMocks
 	private DummyBankService bankService;
 
+	private User user;
+
+	private Wallet wallet;
+
+	private BankCoordinate bankCoordinate;
+
 	@BeforeEach
 	void setUp() throws Exception {
+		bankCoordinate = BankCoordinate.builder().id(1L).accountNumber("number").build();
+		user = User.builder().id(1L).name("name").email("email").password("pass").build();
+		wallet = Wallet.builder().amount(BigDecimal.TEN).currency("EUR").owner(user).build();
+		bankCoordinate.setUsers(List.of(user));
+		user.setBankCoordinates(List.of(bankCoordinate));
 	}
 
 	@Test
@@ -119,5 +141,90 @@ class DummyBankServiceTest {
 
 		assertThrows(EntityMissingException.class,
 				() -> bankService.linkUserToBankCoordinate("email@mail.com", "accountNumber"));
+	}
+
+	@Test
+	void withdraw_whenCalled_returnCorrectBankTransaction() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		BankTransaction test = bankService.withdraw("email", 1L, 1L, BigDecimal.ONE);
+
+		assertThat(test.getAmount()).isEqualTo(BigDecimal.ONE);
+		assertThat(test.getBankCoordinate()).isEqualTo(bankCoordinate);
+		assertThat(test.getWallet()).isEqualTo(wallet);
+		assertThat(test.getType()).isEqualTo(BankTransactionType.WITHDRAWAL);
+	}
+
+	@Test
+	void withdraw_whenCalled_properlySubstractFunds() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		bankService.withdraw("email", 1L, 1L, BigDecimal.ONE);
+
+		assertThat(wallet.getAmount()).isEqualTo(new BigDecimal(9.00).setScale(2));
+	}
+
+	@Test
+	void withdraw_whenCalled_updateDatabase() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		bankService.withdraw("email", 1L, 1L, BigDecimal.ONE);
+
+		verify(mockWalletRepository, times(1)).save(wallet);
+		verify(mockBankTransactionRepository, times(1)).save(any(BankTransaction.class));
+	}
+
+	@Test
+	void withdraw_whenNotEnoughFundInWallet_throwsInsufficientFundException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		assertThrows(InsufficientFundException.class,
+				() -> bankService.withdraw("email", 1L, 1L, new BigDecimal(10000)));
+	}
+
+	@Test
+	void withdraw_whenCalledWithANegativeAmount_throwInvalidArgumentException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+
+		assertThrows(InvalidArgumentException.class,
+				() -> bankService.withdraw("email", 1L, 1L, new BigDecimal(-10000)));
+	}
+
+	@Test
+	void withdraw_whenUserWhoDontOwnWallet_throwWrongUserException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+		wallet.getOwner().setEmail("oh nyo !");
+
+		assertThrows(WrongUserException.class, () -> bankService.withdraw("email", 1L, 1L, BigDecimal.ONE));
+	}
+
+	@Test
+	void withdraw_whenWalletDoesntExist_throwEntityMissingException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.empty());
+
+		assertThrows(EntityMissingException.class, () -> bankService.withdraw("email", 1L, 1L, BigDecimal.ONE));
+	}
+
+	@Test
+	void withdraw_whenUserDoesntHaveALinkToBankCoordinate_throwInvalidArgumentException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.of(bankCoordinate));
+		when(mockWalletRepository.findById(1L)).thenReturn(Optional.of(wallet));
+		wallet.getOwner().setBankCoordinates(new ArrayList<>());
+
+		assertThrows(InvalidArgumentException.class, () -> bankService.withdraw("email", 1L, 1L, BigDecimal.ONE));
+	}
+
+	@Test
+	void withdraw_whenBankCoordinateDoesntExist_throwEntityMissingException() throws Exception {
+		when(mockBankCoordinateRepository.findById(1L)).thenReturn(Optional.empty());
+
+		assertThrows(EntityMissingException.class, () -> bankService.withdraw("email", 1L, 1L, BigDecimal.ONE));
 	}
 }
