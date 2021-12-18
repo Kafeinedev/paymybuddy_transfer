@@ -23,14 +23,10 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.WalletLink;
 import com.paymybuddy.transfer.service.TransactionService;
-import com.paymybuddy.transfer.service.UserService;
 import com.paymybuddy.transfer.service.WalletLinkService;
 
 @Controller
 public class TransactionController {
-
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private WalletLinkService walletLinkService;
@@ -45,7 +41,7 @@ public class TransactionController {
 
 		int currentPage = page.orElse(1) - 1;// first page == 0
 		List<WalletLink> connections = walletLinkService.getAllOutgoingLinksByUserEmail(auth.getName());
-		Page<String[]> transactionsInfoPage = userService.getTransactionsInfoByUserEmailAndPage(auth.getName(),
+		Page<String[]> transactionsInfoPage = transactionService.getTransactionsInfoByUserEmailAndPage(auth.getName(),
 				currentPage);
 
 		model.put("connections", connections);

@@ -24,7 +24,7 @@ public class WalletLinkService {
 	@Autowired
 	private WalletLinkRepository walletLinkRepository;
 
-	private Logger log = LogManager.getLogger("User Service");
+	private Logger log = LogManager.getLogger("WalletLink Service");
 
 	public List<WalletLink> getAllOutgoingLinksByUserEmail(String email) {
 		return walletLinkRepository.findBySenderOwnerEmail(email);
@@ -52,7 +52,7 @@ public class WalletLinkService {
 
 	private boolean validateName(String name) throws InvalidArgumentException {
 		if (name.length() > 16) {
-			log.error("name too long");
+			log.error("Could not create or update walletLink name too long");
 			throw new InvalidArgumentException();
 		}
 		return true;

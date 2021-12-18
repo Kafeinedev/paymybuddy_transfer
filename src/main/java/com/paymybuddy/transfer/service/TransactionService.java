@@ -2,15 +2,23 @@ package com.paymybuddy.transfer.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.paymybuddy.transfer.constant.Currencies;
 import com.paymybuddy.transfer.constant.Fee;
+import com.paymybuddy.transfer.constant.PageSize;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InsufficientFundException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
@@ -119,5 +127,28 @@ public class TransactionService {
 		transaction.setDescription(description);
 
 		return transactionRepository.save(transaction);
+	}
+
+	public Page<String[]> getTransactionsInfoByUserEmailAndPage(String email, int page)
+			throws InvalidArgumentException {
+		if (page < 0) {
+			log.error("Trying to access negative page");
+			throw new InvalidArgumentException();
+		}
+		List<String[]> transactionsInfo = new ArrayList<String[]>();
+		Pageable pageRequest = PageRequest.of(page, PageSize.TRANSACTIONS_INFO);
+
+		Page<Transaction> transactions = transactionRepository.findByLinkSenderOwnerEmailOrderByDateDesc(email,
+				pageRequest);
+
+		for (Transaction transaction : transactions) {
+			WalletLink link = walletLinkRepository.findByTransactions(transaction).orElseThrow();
+			Wallet sender = link.getSender();
+			String[] infos = { link.getName(), transaction.getDescription(),
+					transaction.getAmount().toString() + Currencies.SYMBOLS.get(sender.getCurrency()) };
+			transactionsInfo.add(infos);
+		}
+
+		return new PageImpl<String[]>(transactionsInfo, pageRequest, transactions.getTotalElements());
 	}
 }

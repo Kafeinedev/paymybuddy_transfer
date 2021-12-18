@@ -62,7 +62,7 @@ class TransactionControllertTest {
 		Page<String[]> page = new PageImpl<String[]>(new ArrayList<String[]>());
 		List<WalletLink> links = new ArrayList<WalletLink>();
 
-		when(mockUserService.getTransactionsInfoByUserEmailAndPage("a@dress.com", 0)).thenReturn(page);
+		when(mockTransactionService.getTransactionsInfoByUserEmailAndPage("a@dress.com", 0)).thenReturn(page);
 		when(mockWalletLinkService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
 
 		mockMvc.perform(get("/mytransactions")).andExpect(status().is2xxSuccessful())
@@ -77,12 +77,13 @@ class TransactionControllertTest {
 		Page<String[]> page = new PageImpl<String[]>(new ArrayList<String[]>());
 		List<WalletLink> links = new ArrayList<WalletLink>();
 
-		when(mockUserService.getTransactionsInfoByUserEmailAndPage("a@dress.com", 0)).thenReturn(page);
+		when(mockTransactionService.getTransactionsInfoByUserEmailAndPage("a@dress.com", 0)).thenReturn(page);
 		when(mockWalletLinkService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
 
 		mockMvc.perform(get("/mytransactions"));
 
-		verify(mockUserService, times(1)).getTransactionsInfoByUserEmailAndPage(any(String.class), any(Integer.class));
+		verify(mockTransactionService, times(1)).getTransactionsInfoByUserEmailAndPage(any(String.class),
+				any(Integer.class));
 		verify(mockWalletLinkService, times(1)).getAllOutgoingLinksByUserEmail(any(String.class));
 	}
 
@@ -90,7 +91,7 @@ class TransactionControllertTest {
 	void getMyTransactions_whenServiceThrowInvalidArgumentException_return400BadRequest() throws Exception {
 		List<WalletLink> links = new ArrayList<WalletLink>();
 		when(mockWalletLinkService.getAllOutgoingLinksByUserEmail("a@dress.com")).thenReturn(links);
-		doThrow(new InvalidArgumentException()).when(mockUserService)
+		doThrow(new InvalidArgumentException()).when(mockTransactionService)
 				.getTransactionsInfoByUserEmailAndPage(any(String.class), any(Integer.class));
 
 		mockMvc.perform(get("/mytransactions?page=-1")).andExpect(status().isBadRequest());
