@@ -49,6 +49,7 @@ public class TransactionService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Transactional
 	public Transaction makeTransaction(String emitterEmail, long walletLinkId, BigDecimal amount, String description)
 			throws EntityMissingException, InsufficientFundException, WrongUserException, InvalidArgumentException {
 
@@ -113,6 +114,7 @@ public class TransactionService {
 		return amount.multiply(Fee.STANDARD_FEE).setScale(2, RoundingMode.HALF_UP);
 	}
 
+	@Transactional
 	public Transaction updateDescription(long id, String description)
 			throws EntityMissingException, InvalidArgumentException {
 		if (!validateDescription(description)) {
@@ -129,6 +131,7 @@ public class TransactionService {
 		return transactionRepository.save(transaction);
 	}
 
+	@Transactional
 	public Page<String[]> getTransactionsInfoByUserEmailAndPage(String email, int page)
 			throws InvalidArgumentException {
 		if (page < 0) {

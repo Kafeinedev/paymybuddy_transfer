@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -39,4 +40,7 @@ public class User {
 
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
 	private List<Wallet> wallets;
+
+	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+	private List<BankCoordinate> bankCoordinates;
 }

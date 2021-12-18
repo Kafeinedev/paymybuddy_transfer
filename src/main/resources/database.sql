@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS bank_transactions;
+DROP TABLE IF EXISTS users_bank_coordinates;
 DROP TABLE IF EXISTS bank_coordinates;
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS wallets_links;
@@ -84,4 +85,13 @@ CREATE TABLE bank_transactions(
     FOREIGN KEY(bank_coordinate_id) REFERENCES bank_coordinates(id),
     CONSTRAINT fk_wallet
     FOREIGN KEY(wallet_id) REFERENCES wallets(id)
+)ENGINE = InnoDB;
+
+CREATE TABLE users_bank_coordinates(
+    user_id BIGINT NOT NULL,
+    bank_coordinate_id BIGINT NOT NULL,
+    CONSTRAINT fk_bank_coordinate_id
+    FOREIGN KEY(bank_coordinate_id) REFERENCES bank_coordinates(id),
+    CONSTRAINT fk_user_id
+    FOREIGN KEY(user_id) REFERENCES users(id)
 )ENGINE = InnoDB;

@@ -2,6 +2,8 @@ package com.paymybuddy.transfer.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,12 @@ public class WalletLinkService {
 
 	private Logger log = LogManager.getLogger("WalletLink Service");
 
+	@Transactional
 	public List<WalletLink> getAllOutgoingLinksByUserEmail(String email) {
 		return walletLinkRepository.findBySenderOwnerEmail(email);
 	}
 
+	@Transactional
 	public WalletLink createWalletLink(String name, String emailUserSender, long idSender, long idReceiver)
 			throws WrongUserException, InvalidArgumentException, EntityMissingException {
 		validateName(name);
@@ -73,6 +77,7 @@ public class WalletLinkService {
 		return true;
 	}
 
+	@Transactional
 	public WalletLink updateName(long linkId, String newName) throws EntityMissingException, InvalidArgumentException {
 		validateName(newName);
 

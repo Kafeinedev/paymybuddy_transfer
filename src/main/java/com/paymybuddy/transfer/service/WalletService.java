@@ -1,5 +1,7 @@
 package com.paymybuddy.transfer.service;
 
+import javax.transaction.Transactional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class WalletService {
 
 	private Logger log = LogManager.getLogger("Wallet Service");
 
+	@Transactional
 	public Wallet createWallet(String ownerEmail, String currency)
 			throws InvalidArgumentException, EntityMissingException {
 		validateCurrency(currency);

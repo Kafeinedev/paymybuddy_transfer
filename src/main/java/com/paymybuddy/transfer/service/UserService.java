@@ -3,6 +3,8 @@ package com.paymybuddy.transfer.service;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.transaction.Transactional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ public class UserService implements UserDetailsService {
 	private Logger log = LogManager.getLogger("User Service");
 
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(email).orElseThrow(() -> {
 			log.error("Trying to load inexistent user with email : " + email);
@@ -42,6 +45,7 @@ public class UserService implements UserDetailsService {
 				List.of(new SimpleGrantedAuthority("ROLE_USER")));
 	}
 
+	@Transactional
 	public User createUser(String name, String email, String password) throws InvalidArgumentException {
 		validateName(name);
 		validateEmail(email);
@@ -55,6 +59,7 @@ public class UserService implements UserDetailsService {
 		return userRepository.save(user);
 	}
 
+	@Transactional
 	public User updateUser(String userEmail, String name, String email, String password)
 			throws EntityMissingException, InvalidArgumentException {
 		User user = userRepository.findByEmail(userEmail).orElseThrow(() -> {

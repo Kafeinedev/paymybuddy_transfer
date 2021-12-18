@@ -155,7 +155,7 @@ class UserServiceTest {
 
 		when(mockUserRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
 
-		User test = userService.updateUser("email@a.com", null, null, "newP@ssword1");
+		userService.updateUser("email@a.com", null, null, "newP@ssword1");
 
 		verify(mockPasswordEncoder, times(1)).encode("newP@ssword1");
 	}
