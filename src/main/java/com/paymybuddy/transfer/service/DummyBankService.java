@@ -20,28 +20,29 @@ import com.paymybuddy.transfer.model.BankCoordinate;
 import com.paymybuddy.transfer.model.BankTransaction;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.repository.BankCoordinateRepository;
-import com.paymybuddy.transfer.repository.BankTransactionRepository;
-import com.paymybuddy.transfer.repository.UserRepository;
-import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.repository.IBankCoordinateRepository;
+import com.paymybuddy.transfer.repository.IBankTransactionRepository;
+import com.paymybuddy.transfer.repository.IUserRepository;
+import com.paymybuddy.transfer.repository.IWalletRepository;
 
 @Service
-public class DummyBankService {
+public class DummyBankService implements IBankService {
 
 	@Autowired
-	private BankCoordinateRepository bankCoordinateRepository;
+	private IBankCoordinateRepository bankCoordinateRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private IUserRepository userRepository;
 
 	@Autowired
-	private WalletRepository walletRepository;
+	private IWalletRepository walletRepository;
 
 	@Autowired
-	private BankTransactionRepository bankTransactionRepository;
+	private IBankTransactionRepository bankTransactionRepository;
 
 	private Logger log = LogManager.getLogger("Bank Service");
 
+	@Override
 	@Transactional
 	public boolean linkUserToBankCoordinate(String userEmail, String accountNumber) throws EntityMissingException {
 		User user = userRepository.findByEmail(userEmail).orElseThrow(() -> {
@@ -58,6 +59,7 @@ public class DummyBankService {
 		return true;
 	}
 
+	@Override
 	@Transactional
 	public BankCoordinate createBankCoordinate(String accountNumber) throws InvalidArgumentException {
 		validateAccountNumber(accountNumber);
@@ -70,6 +72,7 @@ public class DummyBankService {
 		return bankCoordinateRepository.save(coordinate);
 	}
 
+	@Override
 	@Transactional
 	public BankTransaction withdraw(String userEmail, long bankCoordinateId, long walletId, BigDecimal amount)
 			throws EntityMissingException, InsufficientFundException, WrongUserException, InvalidArgumentException {
@@ -92,6 +95,7 @@ public class DummyBankService {
 		return bTransaction;
 	}
 
+	@Override
 	@Transactional
 	public BankTransaction fund(String userEmail, long bankCoordinateId, long walletId, BigDecimal amount)
 			throws EntityMissingException, WrongUserException, InvalidArgumentException {

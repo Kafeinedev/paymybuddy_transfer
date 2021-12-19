@@ -33,26 +33,26 @@ import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.model.WalletLink;
 import com.paymybuddy.transfer.model.User;
-import com.paymybuddy.transfer.repository.TransactionRepository;
-import com.paymybuddy.transfer.repository.UserRepository;
-import com.paymybuddy.transfer.repository.WalletLinkRepository;
-import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.repository.ITransactionRepository;
+import com.paymybuddy.transfer.repository.IUserRepository;
+import com.paymybuddy.transfer.repository.IWalletLinkRepository;
+import com.paymybuddy.transfer.repository.IWalletRepository;
 import com.paymybuddy.transfer.service.TransactionService;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
 
 	@Mock
-	private TransactionRepository mockTransactionRepository;
+	private ITransactionRepository mockTransactionRepository;
 
 	@Mock
-	private WalletRepository mockWalletRepository;
+	private IWalletRepository mockWalletRepository;
 
 	@Mock
-	private WalletLinkRepository mockWalletLinkRepository;
+	private IWalletLinkRepository mockWalletLinkRepository;
 
 	@Mock
-	private UserRepository mockUserRepository;
+	private IUserRepository mockUserRepository;
 
 	@InjectMocks
 	private TransactionService transactionService;
@@ -170,7 +170,7 @@ class TransactionServiceTest {
 		when(mockTransactionRepository.findById(1L)).thenReturn(Optional.of(transaction));
 		when(mockTransactionRepository.save(transaction)).thenReturn(transaction);
 
-		Transaction test = transactionService.updateDescription(1L, "this is an updated description");
+		Transaction test = transactionService.updateTransactionDescription(1L, "this is an updated description");
 
 		assertThat(test.getDescription()).isEqualTo("this is an updated description");
 		assertThat(test.getAmount()).isEqualTo(BigDecimal.TEN);
@@ -184,14 +184,14 @@ class TransactionServiceTest {
 				.build();
 		when(mockTransactionRepository.findById(1L)).thenReturn(Optional.of(transaction));
 
-		transactionService.updateDescription(1L, "this is an updated description");
+		transactionService.updateTransactionDescription(1L, "this is an updated description");
 
 		verify(mockTransactionRepository, times(1)).save(transaction);
 	}
 
 	@Test
 	void updateDescription_ifDescriptionTooLong_throwInvalidArgumentException() {
-		assertThrows(InvalidArgumentException.class, () -> transactionService.updateDescription(1L,
+		assertThrows(InvalidArgumentException.class, () -> transactionService.updateTransactionDescription(1L,
 				"This description is far too loooooooooooooooooooooooooooooooooooooooooooooooooo"
 						+ "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
 						+ "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
@@ -203,7 +203,7 @@ class TransactionServiceTest {
 		when(mockTransactionRepository.findById(1L)).thenReturn(Optional.empty());
 
 		assertThrows(EntityMissingException.class,
-				() -> transactionService.updateDescription(1L, "this is an updated description"));
+				() -> transactionService.updateTransactionDescription(1L, "this is an updated description"));
 	}
 
 	@Test

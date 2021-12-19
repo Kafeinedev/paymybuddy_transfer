@@ -10,7 +10,7 @@ import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.WalletLink;
 
 @Repository
-public interface WalletLinkRepository extends JpaRepository<WalletLink, Long> {
+public interface IWalletLinkRepository extends JpaRepository<WalletLink, Long> {
 
 	public List<WalletLink> findBySenderOwnerEmail(String email);
 

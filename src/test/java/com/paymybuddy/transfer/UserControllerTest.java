@@ -23,7 +23,7 @@ import com.paymybuddy.transfer.controller.UserController;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
-import com.paymybuddy.transfer.service.UserService;
+import com.paymybuddy.transfer.service.IUserService;
 
 @WebMvcTest(UserController.class)
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +31,7 @@ import com.paymybuddy.transfer.service.UserService;
 class UserControllerTest {
 
 	@MockBean
-	private UserService mockUserService;
+	private IUserService mockUserService;
 
 	@Autowired
 	private MockMvc mockMvc;

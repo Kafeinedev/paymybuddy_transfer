@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.paymybuddy.transfer.model.BankCoordinate;
 
 @Repository
-public interface BankCoordinateRepository extends JpaRepository<BankCoordinate, Long> {
+public interface IBankCoordinateRepository extends JpaRepository<BankCoordinate, Long> {
 
 	Optional<BankCoordinate> findByAccountNumber(String string);
 

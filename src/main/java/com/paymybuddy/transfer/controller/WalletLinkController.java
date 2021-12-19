@@ -10,13 +10,13 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.service.WalletLinkService;
+import com.paymybuddy.transfer.service.IWalletLinkService;
 
 @RestController
 public class WalletLinkController {
 
 	@Autowired
-	private WalletLinkService walletLinkService;
+	private IWalletLinkService walletLinkService;
 
 	@PostMapping("/walletlink")
 	public WalletLink createWalletLink(String name, long senderId, long receiverId, Authentication auth)
@@ -27,6 +27,6 @@ public class WalletLinkController {
 	@PatchMapping("/walletlink")
 	public WalletLink updateWalletLinkName(long walletLinkId, String newName)
 			throws EntityMissingException, InvalidArgumentException {
-		return walletLinkService.updateName(walletLinkId, newName);
+		return walletLinkService.updateWalletLinkName(walletLinkId, newName);
 	}
 }

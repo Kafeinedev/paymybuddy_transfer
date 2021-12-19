@@ -12,20 +12,21 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.repository.UserRepository;
-import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.repository.IUserRepository;
+import com.paymybuddy.transfer.repository.IWalletRepository;
 
 @Service
-public class WalletService {
+public class WalletService implements IWalletService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private IUserRepository userRepository;
 
 	@Autowired
-	private WalletRepository walletRepository;
+	private IWalletRepository walletRepository;
 
 	private Logger log = LogManager.getLogger("Wallet Service");
 
+	@Override
 	@Transactional
 	public Wallet createWallet(String ownerEmail, String currency)
 			throws InvalidArgumentException, EntityMissingException {

@@ -14,25 +14,27 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.repository.WalletLinkRepository;
-import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.repository.IWalletLinkRepository;
+import com.paymybuddy.transfer.repository.IWalletRepository;
 
 @Service
-public class WalletLinkService {
+public class WalletLinkService implements IWalletLinkService {
 
 	@Autowired
-	private WalletRepository walletRepository;
+	private IWalletRepository walletRepository;
 
 	@Autowired
-	private WalletLinkRepository walletLinkRepository;
+	private IWalletLinkRepository walletLinkRepository;
 
 	private Logger log = LogManager.getLogger("WalletLink Service");
 
+	@Override
 	@Transactional
 	public List<WalletLink> getAllOutgoingLinksByUserEmail(String email) {
 		return walletLinkRepository.findBySenderOwnerEmail(email);
 	}
 
+	@Override
 	@Transactional
 	public WalletLink createWalletLink(String name, String emailUserSender, long idSender, long idReceiver)
 			throws WrongUserException, InvalidArgumentException, EntityMissingException {
@@ -77,8 +79,9 @@ public class WalletLinkService {
 		return true;
 	}
 
+	@Override
 	@Transactional
-	public WalletLink updateName(long linkId, String newName) throws EntityMissingException, InvalidArgumentException {
+	public WalletLink updateWalletLinkName(long linkId, String newName) throws EntityMissingException, InvalidArgumentException {
 		validateName(newName);
 
 		WalletLink link = walletLinkRepository.findById(linkId).orElseThrow(() -> {

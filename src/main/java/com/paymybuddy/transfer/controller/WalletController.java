@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.service.WalletService;
+import com.paymybuddy.transfer.service.IWalletService;
 
 @RestController
 public class WalletController {
 
 	@Autowired
-	private WalletService walletService;
+	private IWalletService walletService;
 
 	@PostMapping("/wallet")
 	public Wallet createWallet(String currency, Authentication auth)

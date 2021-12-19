@@ -27,28 +27,29 @@ import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.repository.TransactionRepository;
-import com.paymybuddy.transfer.repository.UserRepository;
-import com.paymybuddy.transfer.repository.WalletLinkRepository;
-import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.repository.ITransactionRepository;
+import com.paymybuddy.transfer.repository.IUserRepository;
+import com.paymybuddy.transfer.repository.IWalletLinkRepository;
+import com.paymybuddy.transfer.repository.IWalletRepository;
 
 @Service
-public class TransactionService {
+public class TransactionService implements ITransactionService {
 
 	private Logger log = LogManager.getLogger("Transaction Service");
 
 	@Autowired
-	private TransactionRepository transactionRepository;
+	private ITransactionRepository transactionRepository;
 
 	@Autowired
-	private WalletRepository walletRepository;
+	private IWalletRepository walletRepository;
 
 	@Autowired
-	private WalletLinkRepository walletLinkRepository;
+	private IWalletLinkRepository walletLinkRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private IUserRepository userRepository;
 
+	@Override
 	@Transactional
 	public Transaction makeTransaction(String emitterEmail, long walletLinkId, BigDecimal amount, String description)
 			throws EntityMissingException, InsufficientFundException, WrongUserException, InvalidArgumentException {
@@ -114,8 +115,9 @@ public class TransactionService {
 		return amount.multiply(Fee.STANDARD_FEE).setScale(2, RoundingMode.HALF_UP);
 	}
 
+	@Override
 	@Transactional
-	public Transaction updateDescription(long id, String description)
+	public Transaction updateTransactionDescription(long id, String description)
 			throws EntityMissingException, InvalidArgumentException {
 		if (!validateDescription(description)) {
 			log.error("Trying to update description of transaction " + id + " with a description that is too long");
@@ -131,6 +133,7 @@ public class TransactionService {
 		return transactionRepository.save(transaction);
 	}
 
+	@Override
 	@Transactional
 	public Page<String[]> getTransactionsInfoByUserEmailAndPage(String email, int page)
 			throws InvalidArgumentException {

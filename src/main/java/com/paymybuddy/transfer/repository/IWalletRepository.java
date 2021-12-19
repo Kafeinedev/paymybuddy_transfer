@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.paymybuddy.transfer.model.Wallet;
 
 @Repository
-public interface WalletRepository extends JpaRepository<Wallet, Long> {
+public interface IWalletRepository extends JpaRepository<Wallet, Long> {
 
 }

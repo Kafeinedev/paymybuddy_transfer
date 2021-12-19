@@ -22,17 +22,17 @@ import com.paymybuddy.transfer.exception.InsufficientFundException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.service.TransactionService;
-import com.paymybuddy.transfer.service.WalletLinkService;
+import com.paymybuddy.transfer.service.ITransactionService;
+import com.paymybuddy.transfer.service.IWalletLinkService;
 
 @Controller
 public class TransactionController {
 
 	@Autowired
-	private WalletLinkService walletLinkService;
+	private IWalletLinkService walletLinkService;
 
 	@Autowired
-	private TransactionService transactionService;
+	private ITransactionService transactionService;
 
 	@GetMapping("/mytransactions")
 	public ModelAndView myTransactions(@RequestParam Optional<Integer> page, Authentication auth)

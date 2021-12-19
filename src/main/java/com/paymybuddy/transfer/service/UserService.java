@@ -20,13 +20,13 @@ import com.paymybuddy.transfer.constant.RegexStringPattern;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
-import com.paymybuddy.transfer.repository.UserRepository;
+import com.paymybuddy.transfer.repository.IUserRepository;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService, IUserService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private IUserRepository userRepository;
 
 	@Autowired
 	private PasswordEncoder encoder;
@@ -45,6 +45,7 @@ public class UserService implements UserDetailsService {
 				List.of(new SimpleGrantedAuthority("ROLE_USER")));
 	}
 
+	@Override
 	@Transactional
 	public User createUser(String name, String email, String password) throws InvalidArgumentException {
 		validateName(name);
@@ -59,6 +60,7 @@ public class UserService implements UserDetailsService {
 		return userRepository.save(user);
 	}
 
+	@Override
 	@Transactional
 	public User updateUser(String userEmail, String name, String email, String password)
 			throws EntityMissingException, InvalidArgumentException {

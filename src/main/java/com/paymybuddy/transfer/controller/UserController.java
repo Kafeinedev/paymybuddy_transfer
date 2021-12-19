@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
-import com.paymybuddy.transfer.service.UserService;
+import com.paymybuddy.transfer.service.IUserService;
 
 @RestController
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private IUserService userService;
 
 	@PostMapping("/createuser")
 	public User createUser(String name, String email, String password) throws InvalidArgumentException {

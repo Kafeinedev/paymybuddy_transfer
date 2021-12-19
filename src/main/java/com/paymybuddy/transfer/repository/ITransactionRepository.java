@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.paymybuddy.transfer.model.Transaction;
 
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+public interface ITransactionRepository extends JpaRepository<Transaction, Long> {
 
 	public Page<Transaction> findByLinkSenderOwnerEmailOrderByDateDesc(String email, Pageable page);
 }

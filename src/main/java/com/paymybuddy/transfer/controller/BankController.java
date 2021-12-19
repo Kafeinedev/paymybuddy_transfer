@@ -13,7 +13,7 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.BankCoordinate;
 import com.paymybuddy.transfer.model.BankTransaction;
-import com.paymybuddy.transfer.service.DummyBankService;
+import com.paymybuddy.transfer.service.IBankService;
 
 /*
  * Prototype bank controller designed to allow database modification without access to it
@@ -23,7 +23,7 @@ import com.paymybuddy.transfer.service.DummyBankService;
 public class BankController {
 
 	@Autowired
-	private DummyBankService bankService;
+	private IBankService bankService;
 
 	@PostMapping("/fund")
 	public BankTransaction fund(long bankCoordinateId, long walletId, BigDecimal amount, Authentication auth)

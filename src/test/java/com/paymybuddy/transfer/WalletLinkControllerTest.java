@@ -23,7 +23,7 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.service.WalletLinkService;
+import com.paymybuddy.transfer.service.IWalletLinkService;
 
 @WebMvcTest(WalletLinkController.class)
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +31,7 @@ import com.paymybuddy.transfer.service.WalletLinkService;
 public class WalletLinkControllerTest {
 
 	@MockBean
-	private WalletLinkService mockWalletLinkService;
+	private IWalletLinkService mockWalletLinkService;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -90,7 +90,7 @@ public class WalletLinkControllerTest {
 	@Test
 	void updateWalletLinkName_whenCalled_return2xxAndCreatedWalletLink() throws Exception {
 		WalletLink link = new WalletLink();
-		when(mockWalletLinkService.updateName(1L, "name")).thenReturn(link);
+		when(mockWalletLinkService.updateWalletLinkName(1L, "name")).thenReturn(link);
 
 		mockMvc.perform(patch("/walletlink").with(SecurityMockMvcRequestPostProcessors.csrf())
 				.param("walletLinkId", "1").param("newName", "name")).andExpect(status().is2xxSuccessful())
@@ -109,12 +109,12 @@ public class WalletLinkControllerTest {
 		mockMvc.perform(patch("/walletlink").with(SecurityMockMvcRequestPostProcessors.csrf())
 				.param("walletLinkId", "1").param("newName", "name"));
 
-		verify(mockWalletLinkService, times(1)).updateName(1L, "name");
+		verify(mockWalletLinkService, times(1)).updateWalletLinkName(1L, "name");
 	}
 
 	@Test
 	void updateWalletLinkName_whenServiceThrowInvalidArgumentsException_return4xxBadRequest() throws Exception {
-		when(mockWalletLinkService.updateName(1L, "name")).thenThrow(new InvalidArgumentException());
+		when(mockWalletLinkService.updateWalletLinkName(1L, "name")).thenThrow(new InvalidArgumentException());
 
 		mockMvc.perform(patch("/walletlink").with(SecurityMockMvcRequestPostProcessors.csrf())
 				.param("walletLinkId", "1").param("newName", "name")).andExpect(status().isBadRequest());
@@ -122,7 +122,7 @@ public class WalletLinkControllerTest {
 
 	@Test
 	void updateWalletLinkName_whenServiceThrowEntityMissingException_return4xxNotFound() throws Exception {
-		when(mockWalletLinkService.updateName(1L, "name")).thenThrow(new EntityMissingException());
+		when(mockWalletLinkService.updateWalletLinkName(1L, "name")).thenThrow(new EntityMissingException());
 
 		mockMvc.perform(patch("/walletlink").with(SecurityMockMvcRequestPostProcessors.csrf())
 				.param("walletLinkId", "1").param("newName", "name")).andExpect(status().isNotFound());

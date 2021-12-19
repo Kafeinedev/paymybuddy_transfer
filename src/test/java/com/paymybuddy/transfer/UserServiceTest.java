@@ -22,25 +22,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
-import com.paymybuddy.transfer.repository.TransactionRepository;
-import com.paymybuddy.transfer.repository.UserRepository;
-import com.paymybuddy.transfer.repository.WalletLinkRepository;
+import com.paymybuddy.transfer.repository.ITransactionRepository;
+import com.paymybuddy.transfer.repository.IUserRepository;
+import com.paymybuddy.transfer.repository.IWalletLinkRepository;
 import com.paymybuddy.transfer.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
 	@Mock
-	private WalletLinkRepository mockWalletLinkRepository;
+	private IWalletLinkRepository mockWalletLinkRepository;
 
 	@Mock
-	private TransactionRepository mockTransactionRepository;
+	private ITransactionRepository mockTransactionRepository;
 
 	@Mock
 	private PasswordEncoder mockPasswordEncoder;
 
 	@Mock
-	private UserRepository mockUserRepository;
+	private IUserRepository mockUserRepository;
 
 	@InjectMocks
 	private UserService userService;

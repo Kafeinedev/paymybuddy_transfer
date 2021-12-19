@@ -24,18 +24,18 @@ import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.repository.WalletLinkRepository;
-import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.repository.IWalletLinkRepository;
+import com.paymybuddy.transfer.repository.IWalletRepository;
 import com.paymybuddy.transfer.service.WalletLinkService;
 
 @ExtendWith(MockitoExtension.class)
 class WalletLinkServiceTest {
 
 	@Mock
-	private WalletRepository mockWalletRepository;
+	private IWalletRepository mockWalletRepository;
 
 	@Mock
-	private WalletLinkRepository mockWalletLinkRepository;
+	private IWalletLinkRepository mockWalletLinkRepository;
 
 	@InjectMocks
 	private WalletLinkService walletLinkService;
@@ -152,7 +152,7 @@ class WalletLinkServiceTest {
 		when(mockWalletLinkRepository.findById(1L)).thenReturn(Optional.of(link));
 		when(mockWalletLinkRepository.save(link)).thenReturn(link);
 
-		WalletLink test = walletLinkService.updateName(1L, "BetterName");
+		WalletLink test = walletLinkService.updateWalletLinkName(1L, "BetterName");
 
 		assertThat(test.getName()).isEqualTo("BetterName");
 		assertThat(test.getSender()).isEqualTo(sender);
@@ -165,14 +165,14 @@ class WalletLinkServiceTest {
 
 		when(mockWalletLinkRepository.findById(1L)).thenReturn(Optional.of(link));
 
-		walletLinkService.updateName(1L, "newname");
+		walletLinkService.updateWalletLinkName(1L, "newname");
 
 		verify(mockWalletLinkRepository, times(1)).save(link);
 	}
 
 	@Test
 	void updateName_ifNameTooLong_throwInvalidArgumentException() {
-		assertThrows(InvalidArgumentException.class, () -> walletLinkService.updateName(1L,
+		assertThrows(InvalidArgumentException.class, () -> walletLinkService.updateWalletLinkName(1L,
 				"ThisNAMEE ISSSSSSSSSSSSSS farrrrrrrrrrrrrrrr tooooooooo loooooong"));
 	}
 
@@ -180,6 +180,6 @@ class WalletLinkServiceTest {
 	void updateName_ifMissingWalletLink_throwEntityMissingException() {
 		when(mockWalletLinkRepository.findById(1L)).thenReturn(Optional.empty());
 
-		assertThrows(EntityMissingException.class, () -> walletLinkService.updateName(1L, "new name"));
+		assertThrows(EntityMissingException.class, () -> walletLinkService.updateWalletLinkName(1L, "new name"));
 	}
 }
