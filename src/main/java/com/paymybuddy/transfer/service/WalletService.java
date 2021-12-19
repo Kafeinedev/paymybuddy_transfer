@@ -15,6 +15,9 @@ import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.repository.IUserRepository;
 import com.paymybuddy.transfer.repository.IWalletRepository;
 
+/**
+ * WalletServiceImpl.
+ */
 @Service
 public class WalletService implements IWalletService {
 

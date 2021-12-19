@@ -17,6 +17,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/*
+ * Hold the date linked to a physical user.
+ */
 @Data
 @Entity
 @Builder

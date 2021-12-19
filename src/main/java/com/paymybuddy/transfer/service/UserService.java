@@ -22,6 +22,9 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.repository.IUserRepository;
 
+/**
+ * UserServiceImpl.
+ */
 @Service
 public class UserService implements UserDetailsService, IUserService {
 

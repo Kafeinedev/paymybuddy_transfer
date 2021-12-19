@@ -7,9 +7,18 @@ import org.springframework.stereotype.Repository;
 
 import com.paymybuddy.transfer.model.BankCoordinate;
 
+/**
+ * DAL for bankCoordinate
+ */
 @Repository
 public interface IBankCoordinateRepository extends JpaRepository<BankCoordinate, Long> {
 
-	Optional<BankCoordinate> findByAccountNumber(String string);
+	/**
+	 * Find by account number.
+	 *
+	 * @param accountNumber the account number to find.
+	 * @return the optional containing the bankcoordinate.
+	 */
+	Optional<BankCoordinate> findByAccountNumber(String accountNumber);
 
 }

@@ -18,6 +18,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/*
+ * Connect two wallets between each other. Used in transaction. 
+ * The sender wallet is considered the owning wallet and the user owning the wallet also own the walletLink.
+ */
 @Data
 @Entity
 @Builder

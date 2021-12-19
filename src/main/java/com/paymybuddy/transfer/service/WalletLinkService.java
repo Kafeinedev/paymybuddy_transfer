@@ -17,6 +17,9 @@ import com.paymybuddy.transfer.model.WalletLink;
 import com.paymybuddy.transfer.repository.IWalletLinkRepository;
 import com.paymybuddy.transfer.repository.IWalletRepository;
 
+/**
+ * WalletLinkServiceImpl.
+ */
 @Service
 public class WalletLinkService implements IWalletLinkService {
 
@@ -81,7 +84,8 @@ public class WalletLinkService implements IWalletLinkService {
 
 	@Override
 	@Transactional
-	public WalletLink updateWalletLinkName(long linkId, String newName) throws EntityMissingException, InvalidArgumentException {
+	public WalletLink updateWalletLinkName(long linkId, String newName)
+			throws EntityMissingException, InvalidArgumentException {
 		validateName(newName);
 
 		WalletLink link = walletLinkRepository.findById(linkId).orElseThrow(() -> {

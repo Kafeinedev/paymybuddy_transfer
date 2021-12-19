@@ -25,6 +25,9 @@ import com.paymybuddy.transfer.repository.IBankTransactionRepository;
 import com.paymybuddy.transfer.repository.IUserRepository;
 import com.paymybuddy.transfer.repository.IWalletRepository;
 
+/**
+ * Placeholder BankService.
+ */
 @Service
 public class DummyBankService implements IBankService {
 

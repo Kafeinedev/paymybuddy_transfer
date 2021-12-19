@@ -18,6 +18,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/*
+ * Hold the record of a transaction made between to wallet.
+ */
 @Data
 @Entity
 @Builder

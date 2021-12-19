@@ -10,12 +10,24 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.service.IWalletService;
 
+/**
+ * Prototype wallet controller to allow wallet creation.
+ */
 @RestController
 public class WalletController {
 
 	@Autowired
 	private IWalletService walletService;
 
+	/**
+	 * Allow a connected user to add a wallet.
+	 *
+	 * @param currency the currency to be used by the wallet.
+	 * @param auth     the current authentication token.
+	 * @return the wallet newly created.
+	 * @throws InvalidArgumentException in case the currency is invalid
+	 * @throws EntityMissingException   in case the user does not exist.
+	 */
 	@PostMapping("/wallet")
 	public Wallet createWallet(String currency, Authentication auth)
 			throws InvalidArgumentException, EntityMissingException {

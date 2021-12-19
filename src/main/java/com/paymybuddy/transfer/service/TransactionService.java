@@ -32,6 +32,9 @@ import com.paymybuddy.transfer.repository.IUserRepository;
 import com.paymybuddy.transfer.repository.IWalletLinkRepository;
 import com.paymybuddy.transfer.repository.IWalletRepository;
 
+/**
+ * TransactionServiceImpl.
+ */
 @Service
 public class TransactionService implements ITransactionService {
 

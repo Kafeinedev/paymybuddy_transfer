@@ -20,6 +20,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/*
+ * Hold the physical bank account numbers linked to one or multiples users. Also used in bankTransactions.
+ */
 @Data
 @Entity
 @Builder

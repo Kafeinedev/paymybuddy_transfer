@@ -12,12 +12,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * Handle the configuration of the security of the application.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	@Lazy // Cannot do unit test without it.
+	@Lazy // Cannot do unit test without this annotation. Cause circular dependency.
 	private UserDetailsService userDetailsService;
 
 	@Override
@@ -27,11 +30,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.rememberMe().userDetailsService(this.userDetailsService()).and().logout().logoutUrl("/logout");
 	}
 
+	/**
+	 * Password encoder.
+	 *
+	 * @return the password encoder used by the framework.
+	 */
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
+	/**
+	 * This allow the configuration of the authenticationManager, to use given
+	 * userDetailsService. This method is to be handled by the framework.
+	 *
+	 * @param AuthenticationManagerBuilder
+	 * @throws Exception
+	 */
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);

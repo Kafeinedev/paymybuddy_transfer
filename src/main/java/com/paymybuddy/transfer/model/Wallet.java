@@ -19,6 +19,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/*
+ * Owned by a user, keep a record of the current fund of a particular currency available by the user. A user can own multiple wallets.
+ */
+
 @Data
 @Entity
 @Builder

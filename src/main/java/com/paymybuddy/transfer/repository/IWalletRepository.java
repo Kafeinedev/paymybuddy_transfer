@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.paymybuddy.transfer.model.Wallet;
 
+/**
+ * DAL for Wallet.
+ */
 @Repository
 public interface IWalletRepository extends JpaRepository<Wallet, Long> {
 

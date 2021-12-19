@@ -41,8 +41,11 @@ class WalletLinkServiceTest {
 	private WalletLinkService walletLinkService;
 
 	private User senderOwner;
+
 	private User receiverOwner;
+
 	private Wallet sender;
+
 	private Wallet receiver;
 
 	@BeforeEach

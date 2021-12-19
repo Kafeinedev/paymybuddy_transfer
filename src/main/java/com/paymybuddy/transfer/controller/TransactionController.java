@@ -25,6 +25,9 @@ import com.paymybuddy.transfer.model.WalletLink;
 import com.paymybuddy.transfer.service.ITransactionService;
 import com.paymybuddy.transfer.service.IWalletLinkService;
 
+/**
+ * The Controller handling transactions.
+ */
 @Controller
 public class TransactionController {
 
@@ -34,6 +37,15 @@ public class TransactionController {
 	@Autowired
 	private ITransactionService transactionService;
 
+	/**
+	 * Display my transactions.
+	 *
+	 * @param page the page number of user transactions to be displayed if empty
+	 *             default to zero.
+	 * @param auth current authentication token.
+	 * @return the model and view of "/mytransactions".
+	 * @throws InvalidArgumentException if a parameter is invalid.
+	 */
 	@GetMapping("/mytransactions")
 	public ModelAndView myTransactions(@RequestParam Optional<Integer> page, Authentication auth)
 			throws InvalidArgumentException {
@@ -53,6 +65,19 @@ public class TransactionController {
 		return new ModelAndView("transactions", model);
 	}
 
+	/**
+	 * Allow the user to make a transaction where he is the sender.
+	 *
+	 * @param connection The walletLinkId to be used for the transaction.
+	 * @param amount     the amount to be used for the transaction.
+	 * @param auth       the current authentication token.
+	 * @return redirect toward "/mytransactions"
+	 * @throws EntityMissingException    in case the walletLink is not found.
+	 * @throws InsufficientFundException if wallet does not hold enough fund.
+	 * @throws WrongUserException        if the connected user tries to use a
+	 *                                   walletLink he does not own.
+	 * @throws InvalidArgumentException  if an argument is wrong.
+	 */
 	@PostMapping("/transaction")
 	public View executeTransaction(long connection, BigDecimal amount, Authentication auth)
 			throws EntityMissingException, InsufficientFundException, WrongUserException, InvalidArgumentException {
