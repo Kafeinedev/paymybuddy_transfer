@@ -22,9 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/css/**").permitAll().antMatchers("/**").hasRole("USER").and().formLogin()
-				.loginPage("/login").defaultSuccessUrl("/mytransactions").permitAll().and().rememberMe()
-				.userDetailsService(this.userDetailsService()).and().logout().logoutUrl("/logout");
+		http.authorizeRequests().antMatchers("/css/**", "/createuser").permitAll().antMatchers("/**").hasRole("USER")
+				.and().formLogin().loginPage("/login").defaultSuccessUrl("/mytransactions").permitAll().and()
+				.rememberMe().userDetailsService(this.userDetailsService()).and().logout().logoutUrl("/logout");
 	}
 
 	@Bean

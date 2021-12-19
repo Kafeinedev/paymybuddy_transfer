@@ -35,7 +35,7 @@ class WalletControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
-	void createWallet_whenCalled_return2xxAndCreatedWalletLink() throws Exception {
+	void createWallet_whenCalled_return2xxAndWallet() throws Exception {
 		Wallet wallet = new Wallet();
 		when(mockWalletService.createWallet("a@dress.com", "EUR")).thenReturn(wallet);
 
@@ -50,14 +50,14 @@ class WalletControllerTest {
 	}
 
 	@Test
-	void updateWalletLinkName_whenCalled_useService() throws Exception {
+	void createWallet_whenCalled_useService() throws Exception {
 		mockMvc.perform(post("/wallet").with(SecurityMockMvcRequestPostProcessors.csrf()).param("currency", "EUR"));
 
 		verify(mockWalletService, times(1)).createWallet("a@dress.com", "EUR");
 	}
 
 	@Test
-	void updateWalletLinkName_whenServiceThrowInvalidArgumentsException_return4xxBadRequest() throws Exception {
+	void createWallet_whenServiceThrowInvalidArgumentsException_return4xxBadRequest() throws Exception {
 		when(mockWalletService.createWallet("a@dress.com", "EUR")).thenThrow(new InvalidArgumentException());
 
 		mockMvc.perform(post("/wallet").with(SecurityMockMvcRequestPostProcessors.csrf()).param("currency", "EUR"))
@@ -65,7 +65,7 @@ class WalletControllerTest {
 	}
 
 	@Test
-	void updateWalletLinkName_whenServiceThrowEntityMissingException_return4xxNotFound() throws Exception {
+	void createWallet_whenServiceThrowEntityMissingException_return4xxNotFound() throws Exception {
 		when(mockWalletService.createWallet("a@dress.com", "EUR")).thenThrow(new EntityMissingException());
 
 		mockMvc.perform(post("/wallet").with(SecurityMockMvcRequestPostProcessors.csrf()).param("currency", "EUR"))
