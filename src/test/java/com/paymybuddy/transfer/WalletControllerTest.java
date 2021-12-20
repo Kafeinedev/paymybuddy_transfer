@@ -40,8 +40,8 @@ class WalletControllerTest {
 		when(mockWalletService.createWallet("a@dress.com", "EUR")).thenReturn(wallet);
 
 		mockMvc.perform(post("/wallet").with(SecurityMockMvcRequestPostProcessors.csrf()).param("currency", "EUR"))
-				.andExpect(status().is2xxSuccessful()).andExpect(content().string(
-						"{\"id\":0,\"currency\":null,\"amount\":0.00,\"owner\":null,\"outgoingLinks\":null,\"incomingLinks\":null}"));
+				.andExpect(status().is2xxSuccessful())
+				.andExpect(content().string("{\"id\":0,\"currency\":null,\"amount\":0.00}"));
 	}
 
 	@Test

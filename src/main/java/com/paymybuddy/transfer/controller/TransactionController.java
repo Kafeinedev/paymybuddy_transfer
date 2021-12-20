@@ -11,8 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
@@ -21,6 +23,7 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InsufficientFundException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
+import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.WalletLink;
 import com.paymybuddy.transfer.service.ITransactionService;
 import com.paymybuddy.transfer.service.IWalletLinkService;
@@ -86,4 +89,19 @@ public class TransactionController {
 		return new RedirectView("/mytransactions");
 	}
 
+	/**
+	 * Update the description of an existing transaction.
+	 *
+	 * @param transactionId  the id of the transaction to update
+	 * @param newDescription the new description
+	 * @return the updated transaction
+	 * @throws EntityMissingException   in case the transaction does not exist.
+	 * @throws InvalidArgumentException in case the new description is invalid.
+	 */
+	@PatchMapping("/transaction")
+	@ResponseBody
+	public Transaction updateTransactionDescription(long transactionId, String newDescription)
+			throws EntityMissingException, InvalidArgumentException {
+		return transactionService.updateTransactionDescription(transactionId, newDescription);
+	}
 }

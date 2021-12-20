@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,9 +40,11 @@ public class BankCoordinate {
 	@Column(nullable = false, unique = true, length = 34)
 	private String accountNumber;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "bankCoordinate", fetch = FetchType.LAZY)
 	private List<BankTransaction> bankTransactions;
 
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "users_bank_coordinates", joinColumns = @JoinColumn(name = "bank_coordinate_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private List<User> users;

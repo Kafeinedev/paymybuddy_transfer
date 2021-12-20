@@ -47,8 +47,7 @@ class BankControllerTest {
 
 		mockMvc.perform(post("/fund").with(SecurityMockMvcRequestPostProcessors.csrf()).param("bankCoordinateId", "1")
 				.param("walletId", "2").param("amount", "0")).andExpect(status().is2xxSuccessful())
-				.andExpect(content().string(
-						"{\"id\":0,\"amount\":null,\"date\":null,\"type\":null,\"bankCoordinate\":null,\"wallet\":null}"));
+				.andExpect(content().string("{\"id\":0,\"amount\":null,\"date\":null,\"type\":null}"));
 	}
 
 	@Test
@@ -97,8 +96,8 @@ class BankControllerTest {
 
 		mockMvc.perform(post("/withdraw").with(SecurityMockMvcRequestPostProcessors.csrf())
 				.param("bankCoordinateId", "1").param("walletId", "2").param("amount", "0"))
-				.andExpect(status().is2xxSuccessful()).andExpect(content().string(
-						"{\"id\":0,\"amount\":null,\"date\":null,\"type\":null,\"bankCoordinate\":null,\"wallet\":null}"));
+				.andExpect(status().is2xxSuccessful())
+				.andExpect(content().string("{\"id\":0,\"amount\":null,\"date\":null,\"type\":null}"));
 	}
 
 	@Test
@@ -159,8 +158,8 @@ class BankControllerTest {
 		when(mockBankService.createBankCoordinate("numbers...")).thenReturn(coordinate);
 
 		mockMvc.perform(post("/bankcoordinate").with(SecurityMockMvcRequestPostProcessors.csrf())
-				.param("bankCoordinate", "numbers...")).andExpect(status().is2xxSuccessful()).andExpect(
-						content().string("{\"id\":0,\"accountNumber\":null,\"bankTransactions\":null,\"users\":null}"));
+				.param("bankCoordinate", "numbers...")).andExpect(status().is2xxSuccessful())
+				.andExpect(content().string("{\"id\":0,\"accountNumber\":null}"));
 	}
 
 	@Test

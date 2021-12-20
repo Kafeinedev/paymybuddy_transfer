@@ -1,7 +1,9 @@
 package com.paymybuddy.transfer;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,6 +37,7 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InsufficientFundException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
+import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.WalletLink;
 import com.paymybuddy.transfer.service.ITransactionService;
 import com.paymybuddy.transfer.service.IUserService;
@@ -186,5 +189,51 @@ class TransactionControllertTest {
 
 		mockMvc.perform(post("/transaction").with(SecurityMockMvcRequestPostProcessors.csrf()).param("connection", "1")
 				.param("amount", "10.00")).andExpect(status().isBadRequest());
+	}
+
+	@Test
+	void updateTransaction_whenCalled_return2xxAndUpdatedTransaction() throws Exception {
+		Transaction transaction = new Transaction();
+		transaction.setDate(null);
+		when(mockTransactionService.updateTransactionDescription(1, "new description")).thenReturn(transaction);
+
+		mockMvc.perform(patch("/transaction").with(SecurityMockMvcRequestPostProcessors.csrf())
+				.param("transactionId", "1").param("newDescription", "new description"))
+				.andExpect(status().is2xxSuccessful()).andExpect(
+						content().string("{\"id\":0,\"amount\":null,\"date\":null,\"description\":\"\",\"fee\":null}"));
+	}
+
+	@Test
+	void updateTransaction_whenCalletWithoutcsrfToken_return4xxForbidden() throws Exception {
+		mockMvc.perform(patch("/transaction").param("transactionId", "1").param("newDescription", "new description"))
+				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	void updateTransaction_whenCalled_useService() throws Exception {
+		mockMvc.perform(patch("/transaction").with(SecurityMockMvcRequestPostProcessors.csrf())
+				.param("transactionId", "1").param("newDescription", "new description"));
+
+		verify(mockTransactionService, times(1)).updateTransactionDescription(1, "new description");
+	}
+
+	@Test
+	void updateTransaction_whenServiceThrowInvalidArgumentsException_return4xxBadRequest() throws Exception {
+		when(mockTransactionService.updateTransactionDescription(1, "new description"))
+				.thenThrow(new InvalidArgumentException());
+
+		mockMvc.perform(patch("/transaction").with(SecurityMockMvcRequestPostProcessors.csrf())
+				.param("transactionId", "1").param("newDescription", "new description"))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	void updateTransaction_whenServiceThrowEntityMissingException_return4xxNotFound() throws Exception {
+		when(mockTransactionService.updateTransactionDescription(1, "new description"))
+				.thenThrow(new EntityMissingException());
+
+		mockMvc.perform(patch("/transaction").with(SecurityMockMvcRequestPostProcessors.csrf())
+				.param("transactionId", "1").param("newDescription", "new description"))
+				.andExpect(status().isNotFound());
 	}
 }

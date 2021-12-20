@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,13 +44,16 @@ public class Wallet {
 	@Builder.Default
 	private BigDecimal amount = BigDecimal.ZERO.setScale(2);
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	@JoinColumn(nullable = false, updatable = false)
 	private User owner;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
 	private List<WalletLink> outgoingLinks;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
 	private List<WalletLink> incomingLinks;
 }

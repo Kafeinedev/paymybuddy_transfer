@@ -43,8 +43,7 @@ public class WalletLinkControllerTest {
 
 		mockMvc.perform(post("/walletlink").with(SecurityMockMvcRequestPostProcessors.csrf()).param("name", "name")
 				.param("senderId", "1").param("receiverId", "2")).andExpect(status().is2xxSuccessful())
-				.andExpect(content()
-						.string("{\"id\":0,\"name\":null,\"sender\":null,\"receiver\":null,\"transactions\":null}"));
+				.andExpect(content().string("{\"id\":0,\"name\":null}"));
 	}
 
 	@Test
@@ -88,14 +87,13 @@ public class WalletLinkControllerTest {
 	}
 
 	@Test
-	void updateWalletLinkName_whenCalled_return2xxAndCreatedWalletLink() throws Exception {
+	void updateWalletLinkName_whenCalled_return2xxAndUpdatedWalletLink() throws Exception {
 		WalletLink link = new WalletLink();
 		when(mockWalletLinkService.updateWalletLinkName(1L, "name")).thenReturn(link);
 
 		mockMvc.perform(patch("/walletlink").with(SecurityMockMvcRequestPostProcessors.csrf())
 				.param("walletLinkId", "1").param("newName", "name")).andExpect(status().is2xxSuccessful())
-				.andExpect(content()
-						.string("{\"id\":0,\"name\":null,\"sender\":null,\"receiver\":null,\"transactions\":null}"));
+				.andExpect(content().string("{\"id\":0,\"name\":null}"));
 	}
 
 	@Test

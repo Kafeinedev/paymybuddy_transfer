@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,14 +39,17 @@ public class WalletLink {
 	@Column(nullable = false, length = 16)
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	@JoinColumn(nullable = false, updatable = false)
 	private Wallet sender;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	@JoinColumn(nullable = false, updatable = false)
 	private Wallet receiver;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "link", fetch = FetchType.LAZY)
 	private List<Transaction> transactions;
 }

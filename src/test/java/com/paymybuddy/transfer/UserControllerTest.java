@@ -44,8 +44,7 @@ class UserControllerTest {
 
 		mockMvc.perform(post("/createuser").with(SecurityMockMvcRequestPostProcessors.csrf()).param("name", "name")
 				.param("email", "email").param("password", "pass")).andExpect(status().is2xxSuccessful())
-				.andExpect(content().string(
-						"{\"id\":0,\"email\":null,\"name\":null,\"password\":null,\"wallets\":null,\"bankCoordinates\":null}"));
+				.andExpect(content().string("{\"id\":0,\"email\":null,\"name\":null,\"password\":null}"));
 	}
 
 	@Test
@@ -80,8 +79,7 @@ class UserControllerTest {
 
 		mockMvc.perform(put("/user").with(SecurityMockMvcRequestPostProcessors.csrf()).param("name", "name")
 				.param("email", "email").param("password", "pass")).andExpect(status().is2xxSuccessful())
-				.andExpect(content().string(
-						"{\"id\":0,\"email\":null,\"name\":null,\"password\":null,\"wallets\":null,\"bankCoordinates\":null}"));
+				.andExpect(content().string("{\"id\":0,\"email\":null,\"name\":null,\"password\":null}"));
 	}
 
 	@Test
