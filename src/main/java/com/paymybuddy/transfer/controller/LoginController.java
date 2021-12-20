@@ -23,6 +23,6 @@ public class LoginController {
 		if (auth != null && auth.isAuthenticated()) {
 			return new ModelAndView("redirect:/mytransactions");
 		}
-		return new ModelAndView("/login");
+		return new ModelAndView("login");
 	}
 }

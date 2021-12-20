@@ -21,7 +21,7 @@ class LoginControllerTest {
 
 	@Test
 	void login_whenGetRequest_return2xxwithLoginPage() throws Exception {
-		mockMvc.perform(get("/login")).andExpect(status().is2xxSuccessful()).andExpect(view().name("/login"));
+		mockMvc.perform(get("/login")).andExpect(status().is2xxSuccessful()).andExpect(view().name("login"));
 	}
 
 	@Test

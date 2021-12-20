@@ -1,3 +1,4 @@
+USE test;
 DROP TABLE IF EXISTS bank_transactions;
 DROP TABLE IF EXISTS users_bank_coordinates;
 DROP TABLE IF EXISTS bank_coordinates;
