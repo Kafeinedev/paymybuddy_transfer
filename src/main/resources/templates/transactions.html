@@ -13,13 +13,12 @@
 			<h1 class="logo">Pay My Buddy</h1>
 			<div>
 				<a href="/">Home</a> <a class="active" href="/Transfer">Transfer</a>
-				<a href="/Profile">Profile</a> <a href="/Contact">Contact</a> 
+				<a href="/Profile">Profile</a> <a href="/Contact">Contact</a>
 				<form method="post" th:action="@{/logout}" class="inline">
-  <input type="hidden">
-  <button type="submit" name="logout" class="link-button">
-    Log off
-  </button>
-</form>
+					<input type="hidden">
+					<button type="submit" name="logout" class="link-button">
+						Log off</button>
+				</form>
 			</div>
 		</div>
 		<div class="location">
@@ -40,8 +39,8 @@
 				<option th:each="connection : ${connections}"
 					th:text="${connection.name}" th:value="${connection.id}" />
 			</select> <input class="solidborder" type="number" step="any" min="1.0"
-				id="amount" placeholder="0€" th:name="amount"> <input class="payButton"
-				type="submit" value="pay">
+				id="amount" placeholder="0€" th:name="amount"> <input
+				class="payButton" type="submit" value="pay">
 		</form>
 	</section>
 
@@ -59,28 +58,13 @@
 				<td th:text="${transaction[2]}"></td>
 			</tr>
 		</table>
-		
 
-<div th:if="${totalPages > 1}">
-    <div class="row col-sm-10">
-        <div class="col-sm-1">
-            <a th:if="${currentPage > 1}" th:href="@{'/mytransactions'}">First</a>
-            <span th:unless="${currentPage > 1}">First</span>
-        </div>
-        
-        <div class="col-sm-1">
-            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/mytransactions?page=' + ${i}}">[[${i}]]</a>
-      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
-            </span>
-        </div>
-        
-        <div class="col-sm-1">
-            <a th:if="${currentPage < totalPages}" th:href="@{'/mytransactions?page=' + ${totalPages}}">Last</a>
-            <span th:unless="${currentPage < totalPages}">Last</span>
-        </div>
-    </div>
-</div>
+
+		<div th:if="${totalPages > 1}" class="pagination">
+			<a th:if="${currentPage > 1}" th:href="@{'/mytransactions'}">&laquo</a>
+			<a th:each="i: ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage}?active:''" th:href="@{'/mytransactions?page=' + ${i}}">[[${i}]]</a>	
+			<a th:if="${currentPage < totalPages}" th:href="@{'/mytransactions?page=' + ${totalPages}}">&raquo</a>
+		</div>
 
 	</section>
 </body>

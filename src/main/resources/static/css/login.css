@@ -36,7 +36,7 @@ arranged in column in center*/
 }
 /*inputs fields*/
 .input-field{
-    width: 80%;
+    width: 70%;
     margin-bottom: 6%;
     border-radius: 0.2rem;
     border: 0.075rem solid;
@@ -61,4 +61,20 @@ arranged in column in center*/
     font-weight: bold;
     font-size: 0.8rem;
     border: none;
+}
+
+/*pictures in forms*/
+input[type=text] {
+  background-image: url('../images/enveloppe.png');
+  background-size : 32px;
+  background-position: 0px -2px;
+  background-repeat: no-repeat;
+  padding-left: 32px;
+}
+input[type=password] {
+  background-image: url('../images/asterisk.png');
+  background-size : 22px;
+  background-position: 3px 3px;
+  background-repeat: no-repeat;
+  padding-left: 32px;
 }
