@@ -35,9 +35,9 @@ then type the command
 
 ### Executing program
 
-* Execute the following commands to launch the program :
+* In the repository folder run the following command:
 ```
-    java -jar /nameOfTheCreatedJarFile.jar
+    java -jar paymybuddy-0.0.1-SNAPSHOT.jar
 ```
 * To access the application use your browser to connect to localhost/8080
 * You can login using one of the prepopulated user :\
