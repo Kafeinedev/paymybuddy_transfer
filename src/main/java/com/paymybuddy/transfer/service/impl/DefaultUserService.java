@@ -27,7 +27,7 @@ import com.paymybuddy.transfer.service.UserService;
  * UserServiceImpl.
  */
 @Service
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class DefaultUserService implements UserDetailsService, UserService {
 
 	@Autowired
 	private UserRepository userRepository;

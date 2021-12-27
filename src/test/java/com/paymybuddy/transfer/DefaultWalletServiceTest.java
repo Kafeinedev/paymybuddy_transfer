@@ -22,10 +22,10 @@ import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
-import com.paymybuddy.transfer.service.impl.WalletServiceImpl;
+import com.paymybuddy.transfer.service.impl.DefaultWalletService;
 
 @ExtendWith(MockitoExtension.class)
-class WalletServiceTest {
+class DefaultWalletServiceTest {
 
 	@Mock
 	private WalletRepository mockWalletRepository;
@@ -34,7 +34,7 @@ class WalletServiceTest {
 	private UserRepository mockUserRepository;
 
 	@InjectMocks
-	private WalletServiceImpl walletService;
+	private DefaultWalletService walletService;
 
 	private User owner;
 

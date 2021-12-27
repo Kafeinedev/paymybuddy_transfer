@@ -25,10 +25,10 @@ import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.repository.TransactionRepository;
 import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletLinkRepository;
-import com.paymybuddy.transfer.service.impl.UserServiceImpl;
+import com.paymybuddy.transfer.service.impl.DefaultUserService;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class DefaultUserServiceTest {
 
 	@Mock
 	private WalletLinkRepository mockWalletLinkRepository;
@@ -43,7 +43,7 @@ class UserServiceTest {
 	private UserRepository mockUserRepository;
 
 	@InjectMocks
-	private UserServiceImpl userService;
+	private DefaultUserService userService;
 
 	@Test
 	void loadUserByUsername_whenUserEmailIsFound_returnProperUserDetails() {

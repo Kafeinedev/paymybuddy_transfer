@@ -20,7 +20,7 @@ import com.paymybuddy.transfer.service.WalletService;
  * WalletServiceImpl.
  */
 @Service
-public class WalletServiceImpl implements WalletService {
+public class DefaultWalletService implements WalletService {
 
 	@Autowired
 	private UserRepository userRepository;

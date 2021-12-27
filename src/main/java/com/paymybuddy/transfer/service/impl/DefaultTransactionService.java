@@ -37,7 +37,7 @@ import com.paymybuddy.transfer.service.TransactionService;
  * TransactionServiceImpl.
  */
 @Service
-public class TransactionServiceImpl implements TransactionService {
+public class DefaultTransactionService implements TransactionService {
 
 	private Logger log = LogManager.getLogger("Transaction Service");
 
