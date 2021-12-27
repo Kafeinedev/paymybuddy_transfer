@@ -10,7 +10,7 @@ import com.paymybuddy.transfer.model.Wallet;
  * Interface for WalletService.
  */
 @Service
-public interface IWalletService {
+public interface WalletService {
 
 	/**
 	 * Creates the wallet.

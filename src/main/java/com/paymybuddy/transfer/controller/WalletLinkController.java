@@ -10,7 +10,7 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.service.IWalletLinkService;
+import com.paymybuddy.transfer.service.WalletLinkService;
 
 /**
  * Prototype walletLink controller to allow walletLink creation and name
@@ -20,7 +20,7 @@ import com.paymybuddy.transfer.service.IWalletLinkService;
 public class WalletLinkController {
 
 	@Autowired
-	private IWalletLinkService walletLinkService;
+	private WalletLinkService walletLinkService;
 
 	/**
 	 * Creates the wallet link.

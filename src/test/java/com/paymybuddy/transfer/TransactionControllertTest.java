@@ -39,9 +39,9 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.service.ITransactionService;
-import com.paymybuddy.transfer.service.IUserService;
-import com.paymybuddy.transfer.service.IWalletLinkService;
+import com.paymybuddy.transfer.service.TransactionService;
+import com.paymybuddy.transfer.service.UserService;
+import com.paymybuddy.transfer.service.WalletLinkService;
 
 @WebMvcTest(TransactionController.class)
 @ExtendWith(MockitoExtension.class)
@@ -52,13 +52,13 @@ class TransactionControllertTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private IUserService mockUserService;
+	private UserService mockUserService;
 
 	@MockBean
-	private IWalletLinkService mockWalletLinkService;
+	private WalletLinkService mockWalletLinkService;
 
 	@MockBean
-	private ITransactionService mockTransactionService;
+	private TransactionService mockTransactionService;
 
 	@Test
 	void getMyTransactions_whenCalled_return2xxWithModelAndView() throws Exception {

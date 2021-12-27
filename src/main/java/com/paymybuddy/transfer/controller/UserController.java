@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
-import com.paymybuddy.transfer.service.IUserService;
+import com.paymybuddy.transfer.service.UserService;
 
 /**
  * Prototype user controller to allow user creation and modification.
@@ -18,7 +18,7 @@ import com.paymybuddy.transfer.service.IUserService;
 public class UserController {
 
 	@Autowired
-	private IUserService userService;
+	private UserService userService;
 
 	/**
 	 * Allow creation of a new user.

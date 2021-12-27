@@ -31,13 +31,13 @@ import com.paymybuddy.transfer.repository.TransactionRepository;
 import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletLinkRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
-import com.paymybuddy.transfer.service.ITransactionService;
+import com.paymybuddy.transfer.service.TransactionService;
 
 /**
  * TransactionServiceImpl.
  */
 @Service
-public class TransactionServiceImpl implements ITransactionService {
+public class TransactionServiceImpl implements TransactionService {
 
 	private Logger log = LogManager.getLogger("Transaction Service");
 

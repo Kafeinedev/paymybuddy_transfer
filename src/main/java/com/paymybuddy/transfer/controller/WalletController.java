@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.service.IWalletService;
+import com.paymybuddy.transfer.service.WalletService;
 
 /**
  * Prototype wallet controller to allow wallet creation.
@@ -17,7 +17,7 @@ import com.paymybuddy.transfer.service.IWalletService;
 public class WalletController {
 
 	@Autowired
-	private IWalletService walletService;
+	private WalletService walletService;
 
 	/**
 	 * Allow a connected user to add a wallet.

@@ -15,7 +15,7 @@ import com.paymybuddy.transfer.model.Transaction;
  * Interface for TransactionService.
  */
 @Service
-public interface ITransactionService {
+public interface TransactionService {
 
 	/**
 	 * Make transaction.

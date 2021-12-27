@@ -21,13 +21,13 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.repository.UserRepository;
-import com.paymybuddy.transfer.service.IUserService;
+import com.paymybuddy.transfer.service.UserService;
 
 /**
  * UserServiceImpl.
  */
 @Service
-public class UserServiceImpl implements UserDetailsService, IUserService {
+public class UserServiceImpl implements UserDetailsService, UserService {
 
 	@Autowired
 	private UserRepository userRepository;

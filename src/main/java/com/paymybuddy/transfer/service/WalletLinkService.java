@@ -13,7 +13,7 @@ import com.paymybuddy.transfer.model.WalletLink;
  * Interface for WalletLinkService.
  */
 @Service
-public interface IWalletLinkService {
+public interface WalletLinkService {
 
 	/**
 	 * Gets the all links going outward by a user via email.

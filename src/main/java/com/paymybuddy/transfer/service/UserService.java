@@ -10,7 +10,7 @@ import com.paymybuddy.transfer.model.User;
  * Interface for UserService.
  */
 @Service
-public interface IUserService {
+public interface UserService {
 
 	/**
 	 * Create a new user.

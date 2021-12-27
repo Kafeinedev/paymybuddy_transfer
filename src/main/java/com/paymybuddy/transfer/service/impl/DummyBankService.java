@@ -24,13 +24,13 @@ import com.paymybuddy.transfer.repository.BankCoordinateRepository;
 import com.paymybuddy.transfer.repository.BankTransactionRepository;
 import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
-import com.paymybuddy.transfer.service.IBankService;
+import com.paymybuddy.transfer.service.BankService;
 
 /**
  * Placeholder BankService.
  */
 @Service
-public class DummyBankService implements IBankService {
+public class DummyBankService implements BankService {
 
 	@Autowired
 	private BankCoordinateRepository bankCoordinateRepository;

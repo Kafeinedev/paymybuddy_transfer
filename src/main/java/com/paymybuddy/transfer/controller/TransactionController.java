@@ -25,8 +25,8 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.service.ITransactionService;
-import com.paymybuddy.transfer.service.IWalletLinkService;
+import com.paymybuddy.transfer.service.TransactionService;
+import com.paymybuddy.transfer.service.WalletLinkService;
 
 /**
  * The Controller handling transactions.
@@ -35,10 +35,10 @@ import com.paymybuddy.transfer.service.IWalletLinkService;
 public class TransactionController {
 
 	@Autowired
-	private IWalletLinkService walletLinkService;
+	private WalletLinkService walletLinkService;
 
 	@Autowired
-	private ITransactionService transactionService;
+	private TransactionService transactionService;
 
 	/**
 	 * Display my transactions.

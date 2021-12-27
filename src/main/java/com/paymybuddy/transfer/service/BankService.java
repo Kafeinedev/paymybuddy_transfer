@@ -15,7 +15,7 @@ import com.paymybuddy.transfer.model.BankTransaction;
  * Interface for BankService.
  */
 @Service
-public interface IBankService {
+public interface BankService {
 
 	/**
 	 * Link user to a bank coordinate.

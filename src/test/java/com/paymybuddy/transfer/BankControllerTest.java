@@ -26,7 +26,7 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.BankCoordinate;
 import com.paymybuddy.transfer.model.BankTransaction;
-import com.paymybuddy.transfer.service.IBankService;
+import com.paymybuddy.transfer.service.BankService;
 
 @WebMvcTest(BankController.class)
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +34,7 @@ import com.paymybuddy.transfer.service.IBankService;
 class BankControllerTest {
 
 	@MockBean
-	private IBankService mockBankService;
+	private BankService mockBankService;
 
 	@Autowired
 	private MockMvc mockMvc;

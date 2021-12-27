@@ -13,7 +13,7 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.BankCoordinate;
 import com.paymybuddy.transfer.model.BankTransaction;
-import com.paymybuddy.transfer.service.IBankService;
+import com.paymybuddy.transfer.service.BankService;
 
 /*
  * Prototype bank controller to allow user for funding and withdrawal.
@@ -22,7 +22,7 @@ import com.paymybuddy.transfer.service.IBankService;
 public class BankController {
 
 	@Autowired
-	private IBankService bankService;
+	private BankService bankService;
 
 	/**
 	 * This method allow for an user to fund a wallet he owns from a bankCoordinate

@@ -16,13 +16,13 @@ import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.model.WalletLink;
 import com.paymybuddy.transfer.repository.WalletLinkRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
-import com.paymybuddy.transfer.service.IWalletLinkService;
+import com.paymybuddy.transfer.service.WalletLinkService;
 
 /**
  * WalletLinkServiceImpl.
  */
 @Service
-public class WalletLinkServiceImpl implements IWalletLinkService {
+public class WalletLinkServiceImpl implements WalletLinkService {
 
 	@Autowired
 	private WalletRepository walletRepository;

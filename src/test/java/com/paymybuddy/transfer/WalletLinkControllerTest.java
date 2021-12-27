@@ -23,7 +23,7 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.service.IWalletLinkService;
+import com.paymybuddy.transfer.service.WalletLinkService;
 
 @WebMvcTest(WalletLinkController.class)
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +31,7 @@ import com.paymybuddy.transfer.service.IWalletLinkService;
 public class WalletLinkControllerTest {
 
 	@MockBean
-	private IWalletLinkService mockWalletLinkService;
+	private WalletLinkService mockWalletLinkService;
 
 	@Autowired
 	private MockMvc mockMvc;
