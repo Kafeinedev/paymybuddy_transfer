@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.paymybuddy.transfer.model.User;
-import com.paymybuddy.transfer.repository.IUserRepository;
+import com.paymybuddy.transfer.repository.UserRepository;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -35,7 +35,7 @@ public class UserIntegrationTest {
 	private WebApplicationContext context;
 
 	@Autowired
-	private IUserRepository userRepository;
+	private UserRepository userRepository;
 
 	@BeforeEach
 	private void setUp() throws Exception {

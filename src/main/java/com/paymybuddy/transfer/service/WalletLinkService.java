@@ -14,8 +14,8 @@ import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.repository.IWalletLinkRepository;
-import com.paymybuddy.transfer.repository.IWalletRepository;
+import com.paymybuddy.transfer.repository.WalletLinkRepository;
+import com.paymybuddy.transfer.repository.WalletRepository;
 
 /**
  * WalletLinkServiceImpl.
@@ -24,10 +24,10 @@ import com.paymybuddy.transfer.repository.IWalletRepository;
 public class WalletLinkService implements IWalletLinkService {
 
 	@Autowired
-	private IWalletRepository walletRepository;
+	private WalletRepository walletRepository;
 
 	@Autowired
-	private IWalletLinkRepository walletLinkRepository;
+	private WalletLinkRepository walletLinkRepository;
 
 	private Logger log = LogManager.getLogger("WalletLink Service");
 

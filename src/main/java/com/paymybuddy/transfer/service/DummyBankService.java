@@ -20,10 +20,10 @@ import com.paymybuddy.transfer.model.BankCoordinate;
 import com.paymybuddy.transfer.model.BankTransaction;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.repository.IBankCoordinateRepository;
-import com.paymybuddy.transfer.repository.IBankTransactionRepository;
-import com.paymybuddy.transfer.repository.IUserRepository;
-import com.paymybuddy.transfer.repository.IWalletRepository;
+import com.paymybuddy.transfer.repository.BankCoordinateRepository;
+import com.paymybuddy.transfer.repository.BankTransactionRepository;
+import com.paymybuddy.transfer.repository.UserRepository;
+import com.paymybuddy.transfer.repository.WalletRepository;
 
 /**
  * Placeholder BankService.
@@ -32,16 +32,16 @@ import com.paymybuddy.transfer.repository.IWalletRepository;
 public class DummyBankService implements IBankService {
 
 	@Autowired
-	private IBankCoordinateRepository bankCoordinateRepository;
+	private BankCoordinateRepository bankCoordinateRepository;
 
 	@Autowired
-	private IUserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	private IWalletRepository walletRepository;
+	private WalletRepository walletRepository;
 
 	@Autowired
-	private IBankTransactionRepository bankTransactionRepository;
+	private BankTransactionRepository bankTransactionRepository;
 
 	private Logger log = LogManager.getLogger("Bank Service");
 

@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.repository.IWalletLinkRepository;
+import com.paymybuddy.transfer.repository.WalletLinkRepository;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -35,7 +35,7 @@ public class WalletLinkIntegrationTest {
 	private WebApplicationContext context;
 
 	@Autowired
-	private IWalletLinkRepository walletLinkRepository;
+	private WalletLinkRepository walletLinkRepository;
 
 	@BeforeEach
 	private void setUp() throws Exception {

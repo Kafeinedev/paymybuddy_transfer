@@ -12,8 +12,8 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.repository.IUserRepository;
-import com.paymybuddy.transfer.repository.IWalletRepository;
+import com.paymybuddy.transfer.repository.UserRepository;
+import com.paymybuddy.transfer.repository.WalletRepository;
 
 /**
  * WalletServiceImpl.
@@ -22,10 +22,10 @@ import com.paymybuddy.transfer.repository.IWalletRepository;
 public class WalletService implements IWalletService {
 
 	@Autowired
-	private IUserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	private IWalletRepository walletRepository;
+	private WalletRepository walletRepository;
 
 	private Logger log = LogManager.getLogger("Wallet Service");
 

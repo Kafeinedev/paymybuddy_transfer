@@ -11,7 +11,7 @@ import com.paymybuddy.transfer.model.BankCoordinate;
  * DAL for bankCoordinate
  */
 @Repository
-public interface IBankCoordinateRepository extends JpaRepository<BankCoordinate, Long> {
+public interface BankCoordinateRepository extends JpaRepository<BankCoordinate, Long> {
 
 	/**
 	 * Find by account number.

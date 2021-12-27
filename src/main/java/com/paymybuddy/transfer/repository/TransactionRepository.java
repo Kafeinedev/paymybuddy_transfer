@@ -11,7 +11,7 @@ import com.paymybuddy.transfer.model.Transaction;
  * DAL for transactions.
  */
 @Repository
-public interface ITransactionRepository extends JpaRepository<Transaction, Long> {
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
 	/**
 	 * Find the transactions via the email of the user who sent the transaction.

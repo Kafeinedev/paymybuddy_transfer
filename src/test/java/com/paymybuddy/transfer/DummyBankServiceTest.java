@@ -28,26 +28,26 @@ import com.paymybuddy.transfer.model.BankCoordinate;
 import com.paymybuddy.transfer.model.BankTransaction;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.repository.IBankCoordinateRepository;
-import com.paymybuddy.transfer.repository.IBankTransactionRepository;
-import com.paymybuddy.transfer.repository.IUserRepository;
-import com.paymybuddy.transfer.repository.IWalletRepository;
+import com.paymybuddy.transfer.repository.BankCoordinateRepository;
+import com.paymybuddy.transfer.repository.BankTransactionRepository;
+import com.paymybuddy.transfer.repository.UserRepository;
+import com.paymybuddy.transfer.repository.WalletRepository;
 import com.paymybuddy.transfer.service.DummyBankService;
 
 @ExtendWith(MockitoExtension.class)
 class DummyBankServiceTest {
 
 	@Mock
-	private IBankCoordinateRepository mockBankCoordinateRepository;
+	private BankCoordinateRepository mockBankCoordinateRepository;
 
 	@Mock
-	private IBankTransactionRepository mockBankTransactionRepository;
+	private BankTransactionRepository mockBankTransactionRepository;
 
 	@Mock
-	private IWalletRepository mockWalletRepository;
+	private WalletRepository mockWalletRepository;
 
 	@Mock
-	private IUserRepository mockUserRepository;
+	private UserRepository mockUserRepository;
 
 	@InjectMocks
 	private DummyBankService bankService;

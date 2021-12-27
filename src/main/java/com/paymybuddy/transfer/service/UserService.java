@@ -20,7 +20,7 @@ import com.paymybuddy.transfer.constant.RegexStringPattern;
 import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
-import com.paymybuddy.transfer.repository.IUserRepository;
+import com.paymybuddy.transfer.repository.UserRepository;
 
 /**
  * UserServiceImpl.
@@ -29,7 +29,7 @@ import com.paymybuddy.transfer.repository.IUserRepository;
 public class UserService implements UserDetailsService, IUserService {
 
 	@Autowired
-	private IUserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
 	private PasswordEncoder encoder;

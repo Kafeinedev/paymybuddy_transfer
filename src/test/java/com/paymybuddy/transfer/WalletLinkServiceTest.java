@@ -24,18 +24,18 @@ import com.paymybuddy.transfer.exception.WrongUserException;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.model.WalletLink;
-import com.paymybuddy.transfer.repository.IWalletLinkRepository;
-import com.paymybuddy.transfer.repository.IWalletRepository;
+import com.paymybuddy.transfer.repository.WalletLinkRepository;
+import com.paymybuddy.transfer.repository.WalletRepository;
 import com.paymybuddy.transfer.service.WalletLinkService;
 
 @ExtendWith(MockitoExtension.class)
 class WalletLinkServiceTest {
 
 	@Mock
-	private IWalletRepository mockWalletRepository;
+	private WalletRepository mockWalletRepository;
 
 	@Mock
-	private IWalletLinkRepository mockWalletLinkRepository;
+	private WalletLinkRepository mockWalletLinkRepository;
 
 	@InjectMocks
 	private WalletLinkService walletLinkService;

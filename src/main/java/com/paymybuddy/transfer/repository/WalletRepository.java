@@ -9,6 +9,6 @@ import com.paymybuddy.transfer.model.Wallet;
  * DAL for Wallet.
  */
 @Repository
-public interface IWalletRepository extends JpaRepository<Wallet, Long> {
+public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
 }

@@ -27,8 +27,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.paymybuddy.transfer.model.Transaction;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.repository.ITransactionRepository;
-import com.paymybuddy.transfer.repository.IWalletRepository;
+import com.paymybuddy.transfer.repository.TransactionRepository;
+import com.paymybuddy.transfer.repository.WalletRepository;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -42,10 +42,10 @@ public class TransactionTransactionalTest {
 	private WebApplicationContext context;
 
 	@MockBean
-	private ITransactionRepository transactionRepository;
+	private TransactionRepository transactionRepository;
 
 	@Autowired
-	private IWalletRepository walletRepository;
+	private WalletRepository walletRepository;
 
 	@BeforeEach
 	private void setUp() throws Exception {

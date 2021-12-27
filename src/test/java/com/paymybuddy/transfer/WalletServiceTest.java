@@ -20,18 +20,18 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
-import com.paymybuddy.transfer.repository.IUserRepository;
-import com.paymybuddy.transfer.repository.IWalletRepository;
+import com.paymybuddy.transfer.repository.UserRepository;
+import com.paymybuddy.transfer.repository.WalletRepository;
 import com.paymybuddy.transfer.service.WalletService;
 
 @ExtendWith(MockitoExtension.class)
 class WalletServiceTest {
 
 	@Mock
-	private IWalletRepository mockWalletRepository;
+	private WalletRepository mockWalletRepository;
 
 	@Mock
-	private IUserRepository mockUserRepository;
+	private UserRepository mockUserRepository;
 
 	@InjectMocks
 	private WalletService walletService;

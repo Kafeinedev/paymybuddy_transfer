@@ -9,7 +9,7 @@ import com.paymybuddy.transfer.model.User;
 /**
  * DAL for user.
  */
-public interface IUserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
 	/**
 	 * Find by email.

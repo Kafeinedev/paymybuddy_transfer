@@ -13,7 +13,7 @@ import com.paymybuddy.transfer.model.WalletLink;
  * DAL forWalletLinks.
  */
 @Repository
-public interface IWalletLinkRepository extends JpaRepository<WalletLink, Long> {
+public interface WalletLinkRepository extends JpaRepository<WalletLink, Long> {
 
 	/**
 	 * Find by walletlinks via the email of the sending user.
