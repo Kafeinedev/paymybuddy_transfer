@@ -1,4 +1,4 @@
-package com.paymybuddy.transfer.service;
+package com.paymybuddy.transfer.service.impl;
 
 import javax.transaction.Transactional;
 
@@ -14,12 +14,13 @@ import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.model.Wallet;
 import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.service.IWalletService;
 
 /**
  * WalletServiceImpl.
  */
 @Service
-public class WalletService implements IWalletService {
+public class WalletServiceImpl implements IWalletService {
 
 	@Autowired
 	private UserRepository userRepository;

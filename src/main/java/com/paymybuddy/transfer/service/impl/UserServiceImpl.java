@@ -1,4 +1,4 @@
-package com.paymybuddy.transfer.service;
+package com.paymybuddy.transfer.service.impl;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -21,12 +21,13 @@ import com.paymybuddy.transfer.exception.EntityMissingException;
 import com.paymybuddy.transfer.exception.InvalidArgumentException;
 import com.paymybuddy.transfer.model.User;
 import com.paymybuddy.transfer.repository.UserRepository;
+import com.paymybuddy.transfer.service.IUserService;
 
 /**
  * UserServiceImpl.
  */
 @Service
-public class UserService implements UserDetailsService, IUserService {
+public class UserServiceImpl implements UserDetailsService, IUserService {
 
 	@Autowired
 	private UserRepository userRepository;

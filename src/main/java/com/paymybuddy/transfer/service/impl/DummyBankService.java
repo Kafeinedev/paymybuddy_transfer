@@ -1,4 +1,4 @@
-package com.paymybuddy.transfer.service;
+package com.paymybuddy.transfer.service.impl;
 
 import java.math.BigDecimal;
 import java.util.regex.Pattern;
@@ -24,6 +24,7 @@ import com.paymybuddy.transfer.repository.BankCoordinateRepository;
 import com.paymybuddy.transfer.repository.BankTransactionRepository;
 import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.service.IBankService;
 
 /**
  * Placeholder BankService.

@@ -32,7 +32,7 @@ import com.paymybuddy.transfer.repository.BankCoordinateRepository;
 import com.paymybuddy.transfer.repository.BankTransactionRepository;
 import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
-import com.paymybuddy.transfer.service.DummyBankService;
+import com.paymybuddy.transfer.service.impl.DummyBankService;
 
 @ExtendWith(MockitoExtension.class)
 class DummyBankServiceTest {

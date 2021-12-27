@@ -1,4 +1,4 @@
-package com.paymybuddy.transfer.service;
+package com.paymybuddy.transfer.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,12 +31,13 @@ import com.paymybuddy.transfer.repository.TransactionRepository;
 import com.paymybuddy.transfer.repository.UserRepository;
 import com.paymybuddy.transfer.repository.WalletLinkRepository;
 import com.paymybuddy.transfer.repository.WalletRepository;
+import com.paymybuddy.transfer.service.ITransactionService;
 
 /**
  * TransactionServiceImpl.
  */
 @Service
-public class TransactionService implements ITransactionService {
+public class TransactionServiceImpl implements ITransactionService {
 
 	private Logger log = LogManager.getLogger("Transaction Service");
 
